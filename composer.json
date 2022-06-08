@@ -1,0 +1,32 @@
+{
+  "name": "americaneagle-com/php-block-builders",
+  "description": "PHP Block Builders",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "John Jeeves",
+      "email": "john.jeeves@americaneagle.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PhpBlockBuilders\\": "includes/"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpcsstandards/phpcsutils" : "^1.x-dev",
+    "phpcsstandards/phpcsextra" : "^1.x-dev",
+    "phpcompatibility/phpcompatibility-wp": "^2.1.3",
+    "wp-coding-standards/wpcs": "dev-develop",
+    "squizlabs/php_codesniffer": "^3.6"
+  },
+  "scripts": {
+    "format": "./vendor/bin/phpcbf --standard=.phpcs.xml --report=summary,source",
+    "lint": "./vendor/bin/phpcs --standard=.phpcs.xml --report=summary,source"
+  }
+}

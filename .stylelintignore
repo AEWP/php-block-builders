@@ -1,0 +1,6 @@
+assets/css/vendor
+assets/css/admin/vendor
+assets/css/frontend/vendor
+assets/css/shared/vendor
+dist/*
+vendor/*
