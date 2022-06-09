@@ -49,9 +49,6 @@ class CoreParagraph extends BlockBase {
 			'innerContent' => [ '<p>' . trim( $content ) . '</p>' ],
 			'attrs'        => [
 				'className' => $attrs['classname'] ?? '',
-				// 'name'      => $attrs['name'],
-				// 'type'      => $attrs['type'],
-				// 'free'      => $attrs['free'],
 			],
 		];
 
