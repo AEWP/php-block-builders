@@ -27,7 +27,7 @@ class CoreImage extends BlockBase {
 
 
 	/**
-	 * Convert Salesforce paragraphs to Gutenberg equivalent.
+	 * Creates a Core Image Block.
 	 *
 	 * @param  string $content Image id.
 	 * @param  array  $attrs All required block attributes.
@@ -49,20 +49,6 @@ class CoreImage extends BlockBase {
 
 		$image         = sprintf( '<img src="%1s" alt="%2s" class="wp-image-%3s" />', $attachment_url, esc_attr( $alt ), absint( $image_id ) );
 		$inner_content = Figure::create_html( $image, [ 'classname' => $classname ] );
-
-		// $block_template = <<<'TEMPLATE'
-		// <figure class="%1s">
-		// <img src="%2s" alt="%3s" class="wp-image-%4b" />
-		// </figure>
-		// TEMPLATE;
-		//
-		// $inner_content = sprintf(
-		// $block_template,
-		// esc_attr( $classname ), // 1
-		// $attachment_url, // 2
-		// esc_attr( $alt ), // 3
-		// absint( $image_id )// 4
-		// );
 
 		$data = [
 			'blockName'    => self::$block_name,
