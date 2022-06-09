@@ -5,6 +5,8 @@
  * @package PhpBlockBuilders\Blocks
  */
 
+declare( strict_types=1 );
+
 namespace PhpBlockBuilders\Blocks;
 
 /**
@@ -12,23 +14,23 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class YouTube extends Embed {
+class YouTube extends CoreEmbed {
 
 	/**
 	 * Create a twitter block
 	 *
-	 * @param  array  $attrs
+	 * @param  string $content Embed url.
+	 * @param  array  $attrs Attributes array.
 	 *
 	 * @return string
 	 */
-	public static function create(  array $attrs ): string {
-		$url      = esc_url( $attrs['content']['url'] );
-		$provider = $attrs['content']['provider'];
-
-		$class_names   = [ 'is-type-video', 'wp-embed-aspect-16-9', 'wp-has-aspect-ratio', 'wp-block-embed' ];
-		$inner_content = self::create_inner_content( $url, $provider, $class_names );
-
-		return self::create_gutenberg_block( $url, $provider, $inner_content ) ?? '';
+	public static function create( string $content = '', array $attrs = [] ): string {
+		$class_names = [
+			'is-type-video',
+			'wp-embed-aspect-16-9',
+			'wp-has-aspect-ratio',
+		];
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 
 }

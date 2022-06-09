@@ -5,6 +5,8 @@
  * @package PhpBlockBuilders\Blocks
  */
 
+declare( strict_types=1 );
+
 namespace PhpBlockBuilders\Blocks;
 
 /**
@@ -12,26 +14,22 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Twitter extends Embed {
+class Twitter extends CoreEmbed {
 
 	/**
 	 * Create a twitter block
 	 *
-	 * @param  array  $attrs
+	 * @param  string $content Embed url.
+	 * @param  array  $attrs Attributes array.
 	 *
 	 * @return string
 	 */
-	public static function create( array $attrs ): string {
-		$url      = esc_url( $attrs['content']['url'] );
-		$provider = $attrs['content']['provider'];
-
-		$class_names   = [
-			'wp-block-embed',
+	public static function create( string $content = '', array $attrs = [] ): string {
+		$class_names = [
 			'is-type-rich',
 		];
-		$inner_content = self::create_inner_content( $url, $provider, $class_names );
 
-		return self::create_gutenberg_block( $url, $provider, $inner_content ) ?? '';
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 
 

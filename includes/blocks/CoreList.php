@@ -1,6 +1,6 @@
 <?php
 /**
- * Mecum Salesforce Connector
+ * PHP Block Builders
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -9,26 +9,36 @@ declare( strict_types=1 );
 
 namespace PhpBlockBuilders\Blocks;
 
+use PhpBlockBuilders\BlockBase;
+
 /**
  * Core List Gutenberg block.
+ *
+ * @package PhpBlockBuilders\Blocks
  */
-class CoreList {
-	/**
-	 * Convert Salesforce list to Gutenberg equivalent.
-	 *
-	 * @param  array  $list  Salesforce list.
-	 * @param  string $type The list type.
-	 *
-	 * @return string The converted Gutenberg-compatible output.
-	 */
-	public static function convert_to_list_block( array $list, string $type = 'unordered' ): string {
+class CoreList extends BlockBase {
 
-		$list_html = '';
-		if ( ! empty( $list ) ) {
-			foreach ( $list as $li ) {
-				$list_html .= '<li>' . $li . '</li>';
-			}
-		}
+	/**
+	 * The container block name.
+	 *
+	 * @var string
+	 */
+	public static string $block_name = 'core/list';
+
+	/**
+	 * Create a list block from json encoded content array for items.
+	 *
+	 * @param  string $content  json encoded list items string.
+	 * @param  array  $attrs  All required block attributes.
+	 *
+	 * @return string The Gutenberg-compatible output.
+	 * @throws \JsonException On json_decode error.
+	 */
+	public static function create( string $content = '', array $attrs = [] ): string {
+
+		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
+		$type      = $attrs['type'] ?? 'unordered';
+		$lock_move = $attrs['lock_move'] ?? true;
 
 		$inner_content = sprintf(
 			'<%1$s>%2$s</%1$s>',
@@ -37,12 +47,12 @@ class CoreList {
 		);
 
 		$data = [
-			'blockName'    => 'core/list',
+			'blockName'    => self::$block_name,
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'ordered' => 'ordered' === $type,
 				'lock'    => [
-					'move'   => true,
+					'move'   => $lock_move,
 					'remove' => true,
 				],
 			],
@@ -51,4 +61,26 @@ class CoreList {
 		return serialize_block( $data );
 
 	}
+
+	/**
+	 * Create all the list items.
+	 *
+	 * @param  array $attrs Array of item attrs and content.
+	 *
+	 * @return string
+	 */
+	public static function create_items( array $attrs ): string {
+
+		$rtn = '';
+		if ( ! empty( $attrs ) ) {
+			foreach ( $attrs as $li ) {
+				$rtn .= '<li>' . $li . '</li>';
+			}
+		}
+
+		return $rtn;
+
+	}
+
+
 }

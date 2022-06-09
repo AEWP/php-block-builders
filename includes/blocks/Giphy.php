@@ -5,6 +5,8 @@
  * @package PhpBlockBuilders\Blocks
  */
 
+declare( strict_types=1 );
+
 namespace PhpBlockBuilders\Blocks;
 
 /**
@@ -12,30 +14,30 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Giphy extends Embed {
+class Giphy extends CoreEmbed {
 
 	/**
-	 * Creates an Instagram block
+	 * The container block name.
 	 *
-	 * @param  array  $attrs
-	 *
-	 * @return string
+	 * @var string
 	 */
-	public static function create( array $attrs ): string {
-		$url           = esc_url( $attrs['content']['url'] );
-		$provider      = $attrs['content']['provider'];
-		$inner_content = '<div class="wp-block-bauer-blocks-giphy bauer-block-embed">' . $url . '</div>';
+	public static string $block_name = 'embed/giphy';
 
-		$data = [
-			'blockName'    => 'bauer-blocks/giphy',
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'url'              => $url,
-				'providerNameSlug' => $provider,
-			],
+
+	/**
+	 * Creates a Giphy block
+	 *
+	 * @param  string $content String url content.
+	 * @param  array  $attrs All required block attributes.
+	 *
+	 * @return string The Gutenberg-compatible output.
+	 */
+	public static function create( string $content = '', array $attrs = [] ): string {
+		$class_names = [
+			'wp-block-embed-blocks-giphy',
+			'wp-block-embed',
 		];
-
-		return serialize_block( $data );
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 
 }

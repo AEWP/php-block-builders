@@ -5,6 +5,8 @@
  * @package PhpBlockBuilders\Blocks
  */
 
+declare( strict_types=1 );
+
 namespace PhpBlockBuilders\Blocks;
 
 /**
@@ -12,30 +14,18 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Pinterest extends Embed {
+class Pinterest extends CoreEmbed {
 
 	/**
 	 * Creates an Instagram block
 	 *
-	 * @param  array  $attrs
+	 * @param  string $content Embed url.
+	 * @param  array  $attrs Attributes array.
 	 *
 	 * @return string
 	 */
-	public static function create( array $attrs ): string {
-		$url           = esc_url( $attrs['content']['url'] );
-		$provider      = $attrs['content']['provider'];
-		$inner_content = "<div class=\"wp-block-bauer-blocks-pinterest bauer-block-embed\">{$url}</div>";
-
-		$data = [
-			'blockName'    => 'bauer-blocks/pinterest',
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'url'              => $url,
-				'providerNameSlug' => $provider,
-			],
-		];
-
-		return serialize_block( $data );
+	public static function create( string $content = '', array $attrs = [] ): string {
+		return self::create_gutenberg_block( $content, $attrs['provider'] ) ?? '';
 	}
 
 }

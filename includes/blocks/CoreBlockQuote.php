@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Cheetah
+ * Class BlockQuote
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -9,22 +9,24 @@ declare( strict_types=1 );
 
 namespace PhpBlockBuilders\Blocks;
 
+use PhpBlockBuilders\BlockBase;
+
 /**
- * Class Cheetah
+ * Class BlockQuote
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Cheetah extends CoreEmbed {
+class CoreBlockQuote extends BlockBase {
 
 	/**
 	 * The container block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'bauer-blocks/cheetah';
+	public static string $block_name = 'core/quote';
 
 	/**
-	 * Return a string representation of the Cheetah block..
+	 * Insert a  Quote block to the page.
 	 *
 	 * @param  string $content String text/html/url content.
 	 * @param  array  $attrs All required block attributes.
@@ -32,21 +34,20 @@ class Cheetah extends CoreEmbed {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$url           = esc_url( $content );
-		$embed_id      = ltrim( wp_parse_url( $url, PHP_URL_PATH ), 'embed/' );
-		$inner_content = "<div class=\"wp-block-bauer-blocks-cheetah bauer-block-embed\">{$url}</div>";
+
+		$cite          = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
+		$class_name    = $attrs['classname'] ? $attrs['classname'] . ' wp-block-quote' : 'wp-block-quote';
+		$inner_content = sprintf( '<blockquote class="%1s"><p>%2s</p>%3s</blockquote>', $class_name, $content, $cite );
 
 		$data = [
 			'blockName'    => self::$block_name,
 			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'url'              => $url,
-				'embedId'          => $embed_id,
-				'providerNameSlug' => $attrs['provider'],
-			],
+			'attrs'        => $attrs,
 		];
 
 		return serialize_block( $data );
+
 	}
+
 
 }

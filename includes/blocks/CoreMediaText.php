@@ -1,6 +1,6 @@
 <?php
 /**
- * Mecum Salesforce Connector
+ * PHP Block Builders
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -9,57 +9,34 @@ declare( strict_types=1 );
 
 namespace PhpBlockBuilders\Blocks;
 
-use MecumSalesforceConnector\Blocks\{CoreGroup, CoreParagraph};
+use PhpBlockBuilders\BlockBase;
 
 /**
  * Core Media & Text Gutenberg block.
+ *
+ * @package PhpBlockBuilders\Blocks
  */
-class CoreMediaText {
+class CoreMediaText extends BlockBase {
+
 	/**
-	 * Parse Salesforce content and split it into separate paragraphs if too long.
+	 * The container block name.
 	 *
-	 * @param string $content   Salesforce content.
-	 * @param array  $image_ids The WP attachment IDs.
-	 *
-	 * @return string The converted Gutenberg-compatible output.
+	 * @var string
 	 */
-	public static function convert_to_media_text_blocks( string $content, array $image_ids ): string {
-		$html           = '';
-		$countable_html = '';
-		$section_count  = 0;
-
-		$parts = array_filter( explode( '.', $content ) );
-
-		foreach ( $parts as $key => $part ) {
-			// Restore the full stop.
-			$new_part = "{$part}.";
-
-			$countable_html .= $new_part;
-
-			$media_position = $section_count % 2 === 0 ? 'left' : 'right';
-
-			if ( str_word_count( $countable_html ) > 70 || $key === array_key_last( $parts ) ) {
-				$image_id       = $image_ids[ $section_count ] ?? 0;
-				$html          .= self::convert_to_media_text_block( $countable_html, $image_id, $media_position );
-				$html          .= CoreGroup::insert();
-				$countable_html = '';
-				$section_count++;
-			}
-		}
-
-		return $html;
-	}
+	public static string $block_name = 'core/media-text';
 
 	/**
 	 * Convert Salesforce text to Gutenberg equivalent.
 	 *
-	 * @param string $content        The block content.
-	 * @param int    $image_id       The WP attachment ID.
-	 * @param string $media_position The media position (left or right).
+	 * @param  string $content String text/html/url content.
+	 * @param  array  $attrs All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function convert_to_media_text_block( string $content, int $image_id, string $media_position ): string {
+	public static function create( string $content = '', array $attrs = [] ): string {
+
+		$image_id       = $attrs['image_id'] ?? 0;
+		$media_position = $attrs['media_position'] ?? 'right';
 
 		$block_attrs = [
 			'lock' => [
@@ -93,7 +70,7 @@ class CoreMediaText {
 		);
 
 		$data = [
-			'blockName'    => 'core/media-text',
+			'blockName'    => self::$block_name,
 			'innerContent' => [ $inner_content ],
 			'attrs'        => $block_attrs,
 		];
@@ -102,6 +79,51 @@ class CoreMediaText {
 
 	}
 
+
+
+	/**
+	 * Parse input content and split it into separate paragraphs if too long.
+	 *
+	 * @param  string $content  String content.
+	 * @param  array  $attrs An array of image ids.
+	 *
+	 * @return string The converted Gutenberg-compatible output.
+	 */
+	public static function convert_to_media_text_blocks( string $content = '', array $attrs = [] ): string {
+		$html           = '';
+		$countable_html = '';
+		$section_count  = 0;
+
+		$parts = array_filter( explode( '.', $content ) );
+
+		foreach ( $parts as $key => $part ) {
+			// Restore the full stop.
+			$new_part = "{$part}.";
+
+			$countable_html .= $new_part;
+
+			$media_position = $section_count % 2 === 0 ? 'left' : 'right';
+
+			if ( str_word_count( $countable_html ) > 70 || $key === array_key_last( $parts ) ) {
+				$image_id       = $attrs[ $section_count ] ?? 0;
+				$html          .= self::create(
+					$countable_html,
+					[
+						'image_id'       => $image_id,
+						'media_position' => $media_position,
+					]
+				);
+				$html          .= CoreGroup::create();
+				$countable_html = '';
+				$section_count++;
+			}
+		}
+
+		return $html;
+	}
+
+
+
 	/**
 	 * Creates the media text image html and relevant attributes
 	 *
@@ -109,7 +131,7 @@ class CoreMediaText {
 	 *
 	 * @return array
 	 */
-	private static function create_embedded_image( $image_id ) : array {
+	private static function create_embedded_image( int $image_id ) : array {
 
 		$rtn = [
 			'image_html' => '',

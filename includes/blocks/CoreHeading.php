@@ -1,6 +1,6 @@
 <?php
 /**
- * Mecum Salesforce Connector
+ * PHP Block Builders
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -16,16 +16,21 @@ use PhpBlockBuilders\BlockBase;
  */
 class CoreHeading extends BlockBase {
 
+	/**
+	 * Block Name
+	 *
+	 * @var string
+	 */
 	public static string $block_name = 'core/heading';
 	/**
 	 * Insert a Core Heading block to the page.
 	 *
-	 * @param  string  $content  The block content.
-	 * @param  array  $attrs ['level' => 1, 'lock_move' => bool]
+	 * @param  string $content  The block content.
+	 * @param  array  $attrs ['level' => 1, 'lock_move' => bool].
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = array() ): string {
+	public static function create( string $content = '', array $attrs = [] ): string {
 
 		$level     = $attrs['level'] ?? 1;
 		$lock_move = $attrs['lock_move'] ?? true;
@@ -36,16 +41,16 @@ class CoreHeading extends BlockBase {
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$attrs = array(
+		$attrs = [
 			'blockName'    => self::$block_name,
-			'innerContent' => array( $inner_content ),
-			'attrs'        => array(
+			'innerContent' => [ $inner_content ],
+			'attrs'        => [
 				'level' => absint( $level ),
-				'lock'  => array(
+				'lock'  => [
 					'move' => $lock_move,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		return serialize_block( $attrs );
 	}

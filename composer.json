@@ -16,7 +16,8 @@
     }
   },
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "symfony/dom-crawler": "^5.4"
   },
   "require-dev": {
     "phpcsstandards/phpcsutils" : "^1.x-dev",
@@ -28,5 +29,10 @@
   "scripts": {
     "format": "./vendor/bin/phpcbf --standard=.phpcs.xml --report=summary,source",
     "lint": "./vendor/bin/phpcs --standard=.phpcs.xml --report=summary,source"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
