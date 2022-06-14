@@ -84,17 +84,13 @@ abstract class BlockBase implements BlockInterface {
 	public static function get_attributes( array $attrs ) : array {
 
 		$rtn = [
-			'block_name'      => $attrs['block_name'] ?? self::$block_name,
-			'item_block_name' => $attrs['block_name'] ? $attrs['block_name'] . '-item' : self::$item_block_name,
-			'lock_move'       => $attrs['lock_move'] ?? true,
-			'remove'          => $attrs['remove'] ?? true,
+			'block_name'      => static::$block_name,
+			'item_block_name' => static::$item_block_name,
+			'lock_move'       => true,
+			'remove'          => true,
 		];
 
-		$rtn = array_merge_recursive( $attrs, $rtn );
-
-		print_r($rtn);
-
-		return $rtn;
+		return array_merge( $rtn, $attrs );
 
 	}
 
