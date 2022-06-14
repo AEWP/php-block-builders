@@ -90,7 +90,11 @@ abstract class BlockBase implements BlockInterface {
 			'remove'          => $attrs['remove'] ?? true,
 		];
 
-		return array_merge_recursive( $attrs, $rtn );
+		$rtn = array_merge_recursive( $attrs, $rtn );
+
+		print_r($rtn);
+
+		return $rtn;
 
 	}
 
