@@ -14,7 +14,7 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Giphy extends CoreEmbed {
+class EmbedGiphy extends CoreEmbed {
 
 	/**
 	 * The container block name.

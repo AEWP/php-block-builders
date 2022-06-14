@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Pinterest
+ * Class TikTok
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -10,14 +10,14 @@ declare( strict_types=1 );
 namespace PhpBlockBuilders\Blocks;
 
 /**
- * Class Pinterest
+ * Class TikTok
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Pinterest extends CoreEmbed {
+class EmbedTikTok extends CoreEmbed {
 
 	/**
-	 * Creates an Instagram block
+	 * Creates a TikTok block
 	 *
 	 * @param  string $content Embed url.
 	 * @param  array  $attrs Attributes array.
@@ -25,7 +25,15 @@ class Pinterest extends CoreEmbed {
 	 * @return string
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		return self::create_gutenberg_block( $content, $attrs['provider'] ) ?? '';
+		$class_names = [
+			'is-type-video',
+			'is-type-rich',
+		];
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
+
 	}
+
+
+
 
 }

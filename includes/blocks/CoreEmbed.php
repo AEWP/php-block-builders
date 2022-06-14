@@ -40,37 +40,37 @@ class CoreEmbed extends BlockBase {
 
 		switch ( $attrs['provider'] ) {
 			case 'twitter':
-				$rtn = Twitter::create( $content, $attrs );
+				$rtn = EmbedTwitter::create( $content, $attrs );
 				break;
 
 			case 'tiktok':
-				$rtn = TikTok::create( $content, $attrs );
+				$rtn = EmbedTikTok::create( $content, $attrs );
 				break;
 
 			case 'instagram':
-				$rtn = Instagram::create( $content, $attrs );
+				$rtn = EmbedInstagram::create( $content, $attrs );
 				break;
 
 			case 'giphy':
-				$rtn = Giphy::create( $content, $attrs );
+				$rtn = EmbedGiphy::create( $content, $attrs );
 				break;
 
 			case 'youtube':
-				$rtn = YouTube::create( $content, $attrs );
+				$rtn = EmbedYouTube::create( $content, $attrs );
 				break;
 
 			case 'engage-sciences':
 			case 'engagesciences':
 			case 'wayin':
-				$rtn = Cheetah::create( $content, $attrs );
+				$rtn = EmbedCheetah::create( $content, $attrs );
 				break;
 
 			case 'pinterest':
-				$rtn = Pinterest::create( $content, $attrs );
+				$rtn = EmbedPinterest::create( $content, $attrs );
 				break;
 
 			default:
-				$rtn = self::create_generic_block( $content, $attrs );
+				$rtn = self::create_block( $content, $attrs );
 				break;
 		}
 
@@ -85,12 +85,13 @@ class CoreEmbed extends BlockBase {
 	 *
 	 * @return string
 	 */
-	private static function create_generic_block( string $content = '', array $attrs = [] ): string {
-		$provider = $attrs['provider'];
+	private static function create_block( string $content = '', array $attrs = [] ): string {
 
 		if ( empty( $content ) ) {
 			return '';
 		}
+
+		$attrs = self::get_attributes( $attrs );
 
 		$class_names = [
 			'wp-block-embed',
@@ -98,7 +99,7 @@ class CoreEmbed extends BlockBase {
 			'wp-has-aspect-ratio',
 		];
 
-		return self::create_gutenberg_block( $content, $provider, $class_names ) ?? '';
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 
 

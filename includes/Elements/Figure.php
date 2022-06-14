@@ -2,17 +2,18 @@
 /**
  * Class Figure
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Elements
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Elements;
+
 
 /**
  * Class Figure
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Elements
  */
 class Figure {
 
@@ -24,7 +25,7 @@ class Figure {
 	 *
 	 * @return string
 	 */
-	public static function create_html( string $content = '', array $attrs = [] ) : string {
+	public static function create( string $content = '', array $attrs = [] ) : string {
 
 		$classname  = $attrs['classname'] ?? '';
 		$figcaption = ( isset( $attrs['figcaption'] ) ) ? sprintf( '<figcaption>%s</figcaption>', $attrs['figcaption'] ) : '';

@@ -14,14 +14,14 @@ namespace PhpBlockBuilders\Blocks;
  *
  * @package PhpBlockBuilders\Blocks
  */
-class Cheetah extends CoreEmbed {
+class EmbedCheetah extends CoreEmbed {
 
 	/**
 	 * The container block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'bauer-blocks/cheetah';
+	public static string $block_name = 'embed/cheetah';
 
 	/**
 	 * Return a string representation of the Cheetah block..
@@ -36,7 +36,7 @@ class Cheetah extends CoreEmbed {
 		$attrs = self::get_attributes( $attrs );
 		$url           = esc_url( $content );
 		$embed_id      = ltrim( wp_parse_url( $url, PHP_URL_PATH ), 'embed/' );
-		$inner_content = "<div class=\"wp-block-bauer-blocks-cheetah bauer-block-embed\">{$url}</div>";
+		$inner_content = "<div class=\"wp-block-blocks-cheetah block-embed\">{$url}</div>";
 
 		$data = [
 			'blockName'    => $attrs['block_name'],

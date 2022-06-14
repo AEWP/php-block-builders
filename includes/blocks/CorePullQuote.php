@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace PhpBlockBuilders\Blocks;
 
 use PhpBlockBuilders\BlockBase;
+use PhpBlockBuilders\Elements\Figure;
 
 /**
  * Class PullQuote
@@ -39,7 +40,7 @@ class CorePullQuote extends BlockBase {
 
 		$attrs         = self::get_attributes( $attrs );
 		$html          = sprintf( '<blockquote><p>%s</p></blockquote>', $attrs['content'] );
-		$inner_content = Figure::create_html( $html, [ 'classname' => 'wp-block-pullquote' ] );
+		$inner_content = Figure::create( $html, [ 'classname' => 'wp-block-pullquote' ] );
 
 		$data = [
 			'blockName'    => $attrs['block_name'],

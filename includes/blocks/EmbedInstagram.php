@@ -1,6 +1,6 @@
 <?php
 /**
- * Class YouTube
+ * Class Instagram
  *
  * @package PhpBlockBuilders\Blocks
  */
@@ -10,14 +10,14 @@ declare( strict_types=1 );
 namespace PhpBlockBuilders\Blocks;
 
 /**
- * Class YouTube
+ * Class Instagram
  *
  * @package PhpBlockBuilders\Blocks
  */
-class YouTube extends CoreEmbed {
+class EmbedInstagram extends CoreEmbed {
 
 	/**
-	 * Create a twitter block
+	 * Creates an Instagram block
 	 *
 	 * @param  string $content Embed url.
 	 * @param  array  $attrs Attributes array.
@@ -26,11 +26,10 @@ class YouTube extends CoreEmbed {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 		$class_names = [
-			'is-type-video',
-			'wp-embed-aspect-16-9',
-			'wp-has-aspect-ratio',
+			'is-type-rich',
 		];
 		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
+
 	}
 
 }

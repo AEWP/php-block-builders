@@ -10,6 +10,8 @@ declare( strict_types=1 );
 namespace PhpBlockBuilders\Blocks;
 
 use PhpBlockBuilders\BlockBase;
+use PhpBlockBuilders\Elements\Figure;
+use PhpBlockBuilders\Elements\Image;
 
 /**
  * Core Image Gutenberg block.
@@ -36,27 +38,23 @@ class CoreImage extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs          = self::get_attributes( $attrs );
-		$image_id       = absint( $content );
-		$attachment_url = \wp_get_attachment_image_url( $image_id, 'full' );
-		$classname      = $attrs['classname'] ?? '';
+		$attrs     = self::get_attributes( $attrs );
+		$image_id  = absint( $content );
+		$classname = $attrs['classname'] ?? 'wp-block-image size-large';
+		$image     = Image::create( $image_id, [ 'classname' => $classname ] );
 
-		if ( empty( $attachment_url ) ) {
+		if ( empty( $image['image_html'] ) ) {
 			return '';
 		}
 
-		$alt       = \get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ?? '';
-		$classname = ! empty( $classname ) ? $classname : 'wp-block-image size-large';
-
-		$image         = sprintf( '<img src="%1s" alt="%2s" class="wp-image-%3s" />', $attachment_url, esc_attr( $alt ), absint( $image_id ) );
-		$inner_content = Figure::create_html( $image, [ 'classname' => $classname ] );
+		$inner_content = Figure::create( $image['image_html'], [ 'classname' => $classname ] );
 
 		$data = [
 			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'mediaId'   => $image_id,
-				'mediaLink' => $attachment_url,
+				'mediaLink' => $image['attrs']['mediaLink'],
 				'mediaType' => 'image',
 			],
 		];
