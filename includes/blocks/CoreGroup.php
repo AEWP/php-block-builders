@@ -33,8 +33,8 @@ class CoreGroup extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
+		$attrs     = self::get_attributes( $attrs );
 		$tagname   = $attrs['tagname'] ?? 'div';
-		$lock_move = $attrs['lock_move'] ?? true;
 
 		$inner_content = sprintf(
 			'<%1$s class="wp-block-group">%2$s</%1$s>',
@@ -43,13 +43,13 @@ class CoreGroup extends BlockBase {
 		);
 
 		$attrs = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'tagName' => \esc_attr( $tagname ),
 				'lock'    => [
-					'move'   => $lock_move,
-					'remove' => true,
+					'move'   => $attrs['lock_move'],
+					'remove' => $attrs['remove'],
 				],
 			],
 		];

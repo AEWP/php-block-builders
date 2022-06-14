@@ -37,11 +37,12 @@ class CorePullQuote extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
+		$attrs         = self::get_attributes( $attrs );
 		$html          = sprintf( '<blockquote><p>%s</p></blockquote>', $attrs['content'] );
 		$inner_content = Figure::create_html( $html, [ 'classname' => 'wp-block-pullquote' ] );
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => $attrs,
 		];

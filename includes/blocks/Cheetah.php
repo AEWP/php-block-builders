@@ -32,12 +32,14 @@ class Cheetah extends CoreEmbed {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
+
+		$attrs = self::get_attributes( $attrs );
 		$url           = esc_url( $content );
 		$embed_id      = ltrim( wp_parse_url( $url, PHP_URL_PATH ), 'embed/' );
 		$inner_content = "<div class=\"wp-block-bauer-blocks-cheetah bauer-block-embed\">{$url}</div>";
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'url'              => $url,

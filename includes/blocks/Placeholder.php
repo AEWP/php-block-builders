@@ -34,15 +34,15 @@ class Placeholder extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$lock_move = $attrs['lock_move'] ?? true;
+		$attrs = self::get_attributes( $attrs );
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [],
 			'attrs'        => [
 				'text' => wp_strip_all_tags( $content, true ),
 				'lock' => [
-					'move'   => $lock_move,
+					'move'   => $attrs['lock_move'],
 					'remove' => true,
 				],
 			],

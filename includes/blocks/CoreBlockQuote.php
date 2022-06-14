@@ -35,6 +35,7 @@ class CoreBlockQuote extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
+		$attrs         = self::get_attributes( $attrs );
 		$cite          = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
 		$class_name    = $attrs['classname'] ? $attrs['classname'] . ' wp-block-quote' : 'wp-block-quote';
 		$inner_content = sprintf( '<blockquote class="%1s"><p>%2s</p>%3s</blockquote>', $class_name, $content, $cite );

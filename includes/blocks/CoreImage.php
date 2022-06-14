@@ -35,13 +35,14 @@ class CoreImage extends BlockBase {
 	 * @return string The converted Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
+
+		$attrs          = self::get_attributes( $attrs );
 		$image_id       = absint( $content );
 		$attachment_url = \wp_get_attachment_image_url( $image_id, 'full' );
 		$classname      = $attrs['classname'] ?? '';
-		$rtn            = '';
 
 		if ( empty( $attachment_url ) ) {
-			return $rtn;
+			return '';
 		}
 
 		$alt       = \get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ?? '';
@@ -51,7 +52,7 @@ class CoreImage extends BlockBase {
 		$inner_content = Figure::create_html( $image, [ 'classname' => $classname ] );
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'mediaId'   => $image_id,

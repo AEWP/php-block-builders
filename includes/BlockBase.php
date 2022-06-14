@@ -40,8 +40,10 @@ abstract class BlockBase implements BlockInterface {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
+		$attrs = self::get_attributes( $attrs );
+
 		$data = [
-			'blockName'    => $attrs['block_name'] ?? self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $content ],
 			'attrs'        => $attrs,
 		];
@@ -71,6 +73,28 @@ abstract class BlockBase implements BlockInterface {
 
 		return implode( PHP_EOL, $rtn );
 	}
+
+	/**
+	 * Set some sensible attributes that all blocks can use, merge with input attrs.
+	 *
+	 * @param  array $attrs
+	 *
+	 * @return array
+	 */
+	public static function get_attributes( array $attrs ) : array {
+
+		$rtn = [
+			'block_name'      => $attrs['block_name'] ?? self::$block_name,
+			'item_block_name' => $attrs['block_name'] ? $attrs['block_name'] . '-item' : self::$item_block_name,
+			'lock_move'       => $attrs['lock_move'] ?? true,
+			'remove'          => $attrs['remove'] ?? true,
+		];
+
+		return array_merge_recursive( $attrs, $rtn );
+
+	}
+
+
 
 
 }

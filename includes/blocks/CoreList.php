@@ -36,9 +36,9 @@ class CoreList extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
+		$attrs     = self::get_attributes( $attrs );
 		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$type      = $attrs['type'] ?? 'unordered';
-		$lock_move = $attrs['lock_move'] ?? true;
 
 		$inner_content = sprintf(
 			'<%1$s>%2$s</%1$s>',
@@ -47,13 +47,13 @@ class CoreList extends BlockBase {
 		);
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'ordered' => 'ordered' === $type,
 				'lock'    => [
-					'move'   => $lock_move,
-					'remove' => true,
+					'move'   => $attrs['lock_move'],
+					'remove' => $attrs['remove'],
 				],
 			],
 		];
@@ -65,15 +65,15 @@ class CoreList extends BlockBase {
 	/**
 	 * Create all the list items.
 	 *
-	 * @param  array $attrs Array of item attrs and content.
+	 * @param  array $items Array of list item content.
 	 *
 	 * @return string
 	 */
-	public static function create_items( array $attrs ): string {
+	public static function create_items( array $items ): string {
 
 		$rtn = '';
-		if ( ! empty( $attrs ) ) {
-			foreach ( $attrs as $li ) {
+		if ( ! empty( $items ) ) {
+			foreach ( $items as $li ) {
 				$rtn .= '<li>' . $li . '</li>';
 			}
 		}

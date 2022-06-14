@@ -32,8 +32,8 @@ class CoreHeading extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$level     = $attrs['level'] ?? 1;
-		$lock_move = $attrs['lock_move'] ?? true;
+		$attrs = self::get_attributes( $attrs );
+		$level = $attrs['level'] ?? 1;
 
 		$inner_content = sprintf(
 			'<h%1$s>%2$s</h%1$s>',
@@ -42,12 +42,13 @@ class CoreHeading extends BlockBase {
 		);
 
 		$attrs = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
 				'level' => absint( $level ),
 				'lock'  => [
-					'move' => $lock_move,
+					'move'   => $attrs['lock_move'],
+					'remove' => $attrs['remove'],
 				],
 			],
 		];
