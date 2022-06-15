@@ -38,15 +38,10 @@ class CoreImage extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_attributes( $attrs );
-		$image_id  = absint( $content );
-		$classname = $attrs['classname'] ?? 'wp-block-image size-large';
-		$image     = Image::create( $image_id, [ 'classname' => $classname ] );
-
-		if ( empty( $image['image_html'] ) ) {
-			return '';
-		}
-
+		$attrs         = self::get_attributes( $attrs );
+		$image_id      = absint( $content );
+		$classname     = $attrs['classname'] ?? 'wp-block-image size-large';
+		$image         = Image::create( $image_id, [ 'classname' => $classname ] );
 		$inner_content = Figure::create( $image['image_html'], [ 'classname' => $classname ] );
 
 		$data = [
