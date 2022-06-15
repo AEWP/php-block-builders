@@ -28,7 +28,7 @@ class Image {
 	 */
 	public static function create( int $image_id, array $attrs = [] ): array {
 		$rtn = [
-			'image_html' => '',
+			'image_html' => '<img src="" alt="" />',
 			'attrs'      => [
 				'mediaId'   => '',
 				'mediaLink' => '',
@@ -44,7 +44,7 @@ class Image {
 
 			$image_template =
 				<<<'TEMPLATE'
-			<img src="%1$s" alt="%2$s" class="%3s"/>
+			<img src="%1$s" alt="%2$s" class="%3$s"/>
 			TEMPLATE;
 
 			$rtn['image_html'] = sprintf(
