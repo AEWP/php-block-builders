@@ -2,25 +2,25 @@
 /**
  * Class Twitter
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class Twitter
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class EmbedTwitter extends CoreEmbed {
 
 	/**
 	 * Create a twitter block
 	 *
-	 * @param  string $content Embed url.
-	 * @param  array  $attrs Attributes array.
+	 * @param  string $content  Embed url.
+	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */

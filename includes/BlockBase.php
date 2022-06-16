@@ -33,13 +33,12 @@ abstract class BlockBase implements BlockInterface {
 	/**
 	 * Return a string representation of each block.
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs = self::get_attributes( $attrs );
 
 		$data = [
@@ -55,12 +54,11 @@ abstract class BlockBase implements BlockInterface {
 	/**
 	 * Create all the block inner / content items.
 	 *
-	 * @param  array $attrs Array of item attrs and content.
+	 * @param  array $attrs  Array of item attrs and content.
 	 *
 	 * @return string
 	 */
-	protected static function create_items( array $attrs ) : string {
-
+	protected static function create_items( array $attrs ): string {
 		$rtn = [];
 
 		if ( empty( $attrs ) ) {
@@ -75,14 +73,13 @@ abstract class BlockBase implements BlockInterface {
 	}
 
 	/**
-	 * Set some sensible attributes that all blocks can use, merge with input attrs.
+	 * Set some sensible attributes that all Block can use, merge with input attrs.
 	 *
 	 * @param  array $attrs
 	 *
 	 * @return array
 	 */
-	public static function get_attributes( array $attrs ) : array {
-
+	public static function get_attributes( array $attrs ): array {
 		$rtn = [
 			'block_name'      => static::$block_name,
 			'item_block_name' => static::$item_block_name,
@@ -93,8 +90,6 @@ abstract class BlockBase implements BlockInterface {
 		return array_merge( $rtn, $attrs );
 
 	}
-
-
 
 
 }

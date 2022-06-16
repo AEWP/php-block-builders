@@ -2,20 +2,23 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
-use PhpBlockBuilders\Elements\Image;
+use PhpBlockBuilders\Element\Image;
+
+use function esc_attr;
+use function filter_block_kses_value;
 
 /**
  * Core Media & Text Gutenberg block.
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreMediaText extends BlockBase {
 
@@ -29,13 +32,12 @@ class CoreMediaText extends BlockBase {
 	/**
 	 * Convert Salesforce text to Gutenberg equivalent.
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs = self::get_attributes( $attrs );
 
 		$image_id       = $attrs['image_id'] ?? 0;
@@ -67,9 +69,9 @@ class CoreMediaText extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			$media_position === 'right' ? \esc_attr( "has-media-on-the-{$media_position}" ) : '', // 1
+			$media_position === 'right' ? esc_attr( "has-media-on-the-{$media_position}" ) : '', // 1
 			$image_html, // 2
-			\filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 3
+			filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 3
 		);
 
 		$data = [

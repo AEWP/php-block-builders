@@ -2,17 +2,17 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
- * Mecum Placeholder Gutenberg block.
+ * Placeholder Gutenberg block.
  */
 class Placeholder extends BlockBase {
 
@@ -27,13 +27,12 @@ class Placeholder extends BlockBase {
 	/**
 	 * Insert a Placeholder block to the page.
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs = self::get_attributes( $attrs );
 
 		$data = [

@@ -2,19 +2,19 @@
 /**
  * Class BlockQuote
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Class BlockQuote
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreBlockQuote extends BlockBase {
 
@@ -28,13 +28,12 @@ class CoreBlockQuote extends BlockBase {
 	/**
 	 * Insert a  Quote block to the page.
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs         = self::get_attributes( $attrs );
 		$cite          = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
 		$class_name    = $attrs['classname'] ? $attrs['classname'] . ' wp-block-quote' : 'wp-block-quote';

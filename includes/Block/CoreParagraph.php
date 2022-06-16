@@ -2,19 +2,19 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Core Paragraph Gutenberg block.
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreParagraph extends BlockBase {
 
@@ -27,7 +27,7 @@ class CoreParagraph extends BlockBase {
 
 
 	/**
-	 * Convert paragraphs to Gutenberg blocks.
+	 * Convert paragraphs to Gutenberg Block.
 	 *
 	 * @param  string $content  String text/html content.
 	 * @param  array  $attrs  All required block attributes.

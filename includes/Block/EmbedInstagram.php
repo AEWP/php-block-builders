@@ -2,25 +2,25 @@
 /**
  * Class Instagram
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class Instagram
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class EmbedInstagram extends CoreEmbed {
 
 	/**
 	 * Creates an Instagram block
 	 *
-	 * @param  string $content Embed url.
-	 * @param  array  $attrs Attributes array.
+	 * @param  string $content  Embed url.
+	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */
@@ -28,6 +28,7 @@ class EmbedInstagram extends CoreEmbed {
 		$class_names = [
 			'is-type-rich',
 		];
+
 		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 
 	}

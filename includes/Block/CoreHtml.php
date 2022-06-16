@@ -2,19 +2,19 @@
 /**
  * Class CoreHtml
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Class CoreHtml
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreHtml extends BlockBase {
 

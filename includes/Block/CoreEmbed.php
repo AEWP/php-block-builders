@@ -2,19 +2,19 @@
 /**
  * Class Embed
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Class Embed
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreEmbed extends BlockBase {
 
@@ -28,8 +28,8 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Create an embed block chosen by the provider
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
@@ -80,13 +80,12 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Creates a generic embed block
 	 *
-	 * @param  string $content Embed Url.
+	 * @param  string $content  Embed Url.
 	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */
 	private static function create_block( string $content = '', array $attrs = [] ): string {
-
 		if ( empty( $content ) ) {
 			return '';
 		}
@@ -106,14 +105,13 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Return the Gutenberg serialized block string
 	 *
-	 * @param  string $url Embed social url.
-	 * @param  string $provider Provider name.
-	 * @param  array  $class_names Extra classnames..
+	 * @param  string $url  Embed social url.
+	 * @param  string $provider  Provider name.
+	 * @param  array  $class_names  Extra classnames..
 	 *
 	 * @return string
 	 */
 	public static function create_gutenberg_block( string $url, string $provider, array $class_names = [] ): string {
-
 		$inner_content = self::create_inner_content( $url, $provider, $class_names );
 
 		$data = [
@@ -140,9 +138,9 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Creates the block inner content for embeds
 	 *
-	 * @param  string $url Embed social url.
-	 * @param  string $provider Provider name.
-	 * @param  array  $class_names Any additional classnames required..
+	 * @param  string $url  Embed social url.
+	 * @param  string $provider  Provider name.
+	 * @param  array  $class_names  Any additional classnames required..
 	 *
 	 * @return string
 	 */

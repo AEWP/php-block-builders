@@ -2,25 +2,25 @@
 /**
  * Class TikTok
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class TikTok
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class EmbedTikTok extends CoreEmbed {
 
 	/**
 	 * Creates a TikTok block
 	 *
-	 * @param  string $content Embed url.
-	 * @param  array  $attrs Attributes array.
+	 * @param  string $content  Embed url.
+	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */
@@ -29,11 +29,10 @@ class EmbedTikTok extends CoreEmbed {
 			'is-type-video',
 			'is-type-rich',
 		];
+
 		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 
 	}
-
-
 
 
 }

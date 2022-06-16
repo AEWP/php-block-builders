@@ -2,19 +2,21 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
+
+use function filter_block_kses_value;
 
 /**
  * Core List Gutenberg block.
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreList extends BlockBase {
 
@@ -35,7 +37,6 @@ class CoreList extends BlockBase {
 	 * @throws \JsonException On json_decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs     = self::get_attributes( $attrs );
 		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$type      = $attrs['type'] ?? 'unordered';
@@ -43,7 +44,7 @@ class CoreList extends BlockBase {
 		$inner_content = sprintf(
 			'<%1$s>%2$s</%1$s>',
 			( $type === 'ordered' ) ? 'ol' : 'ul', // 1
-			\filter_block_kses_value( $list_html, 'post' ) // 2
+			filter_block_kses_value( $list_html, 'post' ) // 2
 		);
 
 		$data = [
@@ -65,12 +66,11 @@ class CoreList extends BlockBase {
 	/**
 	 * Create all the list items.
 	 *
-	 * @param  array $items Array of list item content.
+	 * @param  array $items  Array of list item content.
 	 *
 	 * @return string
 	 */
 	public static function create_items( array $items ): string {
-
 		$rtn = '';
 		if ( ! empty( $items ) ) {
 			foreach ( $items as $li ) {

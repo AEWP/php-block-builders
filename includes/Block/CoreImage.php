@@ -2,21 +2,21 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
-use PhpBlockBuilders\Elements\Figure;
-use PhpBlockBuilders\Elements\Image;
+use PhpBlockBuilders\Element\Figure;
+use PhpBlockBuilders\Element\Image;
 
 /**
  * Core Image Gutenberg block.
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreImage extends BlockBase {
 
@@ -31,13 +31,12 @@ class CoreImage extends BlockBase {
 	/**
 	 * Creates a Core Image Block.
 	 *
-	 * @param  string $content Image id.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  Image id.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The converted Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$attrs         = self::get_attributes( $attrs );
 		$image_id      = absint( $content );
 		$classname     = $attrs['classname'] ?? 'wp-block-image size-large';
