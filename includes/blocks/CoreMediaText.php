@@ -48,9 +48,9 @@ class CoreMediaText extends BlockBase {
 			],
 		];
 
-//		if ( $media_position === 'right' ) {
-//			$block_attrs['mediaPosition'] = $media_position;
-//		}
+		if ( $media_position === 'right' ) {
+			$block_attrs['mediaPosition'] = $media_position;
+		}
 
 		$image       = Image::create( absint( $image_id ) );
 		$image_html  = $image['image_html'];
