@@ -2,19 +2,19 @@
 /**
  * Class Giphy
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class Giphy
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
-class Giphy extends CoreEmbed {
+class EmbedGiphy extends CoreEmbed {
 
 	/**
 	 * The container block name.
@@ -27,16 +27,17 @@ class Giphy extends CoreEmbed {
 	/**
 	 * Creates a Giphy block
 	 *
-	 * @param  string $content String url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 		$class_names = [
-			'wp-block-embed-blocks-giphy',
+			'wp-block-embed-Block-giphy',
 			'wp-block-embed',
 		];
+
 		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 

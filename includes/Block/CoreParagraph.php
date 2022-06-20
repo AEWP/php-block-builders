@@ -2,19 +2,19 @@
 /**
  * PHP Block Builders
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Core Paragraph Gutenberg block.
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreParagraph extends BlockBase {
 
@@ -27,7 +27,7 @@ class CoreParagraph extends BlockBase {
 
 
 	/**
-	 * Convert paragraphs to Gutenberg blocks.
+	 * Convert paragraphs to Gutenberg Block.
 	 *
 	 * @param  string $content  String text/html content.
 	 * @param  array  $attrs  All required block attributes.
@@ -40,49 +40,26 @@ class CoreParagraph extends BlockBase {
 			return '';
 		}
 
+		$attrs = self::get_attributes( $attrs );
+
 		if ( isset( $attrs['classname'] ) ) {
 			$content = trim( str_replace( '<p>', "<p class=\"{$attrs['classname']}\">", $content ) );
 		}
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ '<p>' . trim( $content ) . '</p>' ],
 			'attrs'        => [
 				'className' => $attrs['classname'] ?? '',
+				'lock'      => [
+					'move'   => $attrs['lock_move'],
+					'remove' => $attrs['remove'],
+				],
 			],
 		];
 
 		return serialize_block( $data );
 
 	}
-
-	/**
-	 * Parse Salesforce content and split it into separate paragraphs if too long.
-	 *
-	 * @param  string $content  multipart html content.
-	 *
-	 * @return string The converted Gutenberg-compatible output.
-	 */
-	public static function convert_to_paragraph_blocks( string $content ): string {
-		$html           = '';
-		$countable_html = '';
-
-		$parts = array_filter( explode( '.', $content ) );
-
-		foreach ( $parts as $key => $part ) {
-			// Restore the full stop.
-			$new_part = "{$part}.";
-
-			$countable_html .= $new_part;
-
-			if ( str_word_count( $countable_html ) > 70 || $key === array_key_last( $parts ) ) {
-				$html          .= self::create( $countable_html );
-				$countable_html = '';
-			}
-		}
-
-		return $html;
-	}
-
 
 }

@@ -2,25 +2,25 @@
 /**
  * Class YouTube
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class YouTube
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
-class YouTube extends CoreEmbed {
+class EmbedYouTube extends CoreEmbed {
 
 	/**
 	 * Create a twitter block
 	 *
-	 * @param  string $content Embed url.
-	 * @param  array  $attrs Attributes array.
+	 * @param  string $content  Embed url.
+	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */
@@ -30,6 +30,7 @@ class YouTube extends CoreEmbed {
 			'wp-embed-aspect-16-9',
 			'wp-has-aspect-ratio',
 		];
+
 		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 

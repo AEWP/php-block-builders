@@ -2,25 +2,25 @@
 /**
  * Class Pinterest
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 /**
  * Class Pinterest
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
-class Pinterest extends CoreEmbed {
+class EmbedPinterest extends CoreEmbed {
 
 	/**
 	 * Creates an Instagram block
 	 *
-	 * @param  string $content Embed url.
-	 * @param  array  $attrs Attributes array.
+	 * @param  string $content  Embed url.
+	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */

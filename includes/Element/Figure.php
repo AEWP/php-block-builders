@@ -2,30 +2,29 @@
 /**
  * Class Figure
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Element
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Element;
 
 /**
  * Class Figure
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Element
  */
 class Figure {
 
 	/**
 	 * This is not a gutenberg block, but potentially the html generated should be reusable
 	 *
-	 * @param  string $content figure content.
-	 * @param  array  $attrs Attribute array.
+	 * @param  string $content  figure content.
+	 * @param  array  $attrs  Attribute array.
 	 *
 	 * @return string
 	 */
-	public static function create_html( string $content = '', array $attrs = [] ) : string {
-
+	public static function create( string $content = '', array $attrs = [] ): string {
 		$classname  = $attrs['classname'] ?? '';
 		$figcaption = ( isset( $attrs['figcaption'] ) ) ? sprintf( '<figcaption>%s</figcaption>', $attrs['figcaption'] ) : '';
 

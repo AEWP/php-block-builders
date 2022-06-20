@@ -2,19 +2,19 @@
 /**
  * Class Embed
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
 /**
  * Class Embed
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CoreEmbed extends BlockBase {
 
@@ -28,8 +28,8 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Create an embed block chosen by the provider
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
@@ -40,37 +40,37 @@ class CoreEmbed extends BlockBase {
 
 		switch ( $attrs['provider'] ) {
 			case 'twitter':
-				$rtn = Twitter::create( $content, $attrs );
+				$rtn = EmbedTwitter::create( $content, $attrs );
 				break;
 
 			case 'tiktok':
-				$rtn = TikTok::create( $content, $attrs );
+				$rtn = EmbedTikTok::create( $content, $attrs );
 				break;
 
 			case 'instagram':
-				$rtn = Instagram::create( $content, $attrs );
+				$rtn = EmbedInstagram::create( $content, $attrs );
 				break;
 
 			case 'giphy':
-				$rtn = Giphy::create( $content, $attrs );
+				$rtn = EmbedGiphy::create( $content, $attrs );
 				break;
 
 			case 'youtube':
-				$rtn = YouTube::create( $content, $attrs );
+				$rtn = EmbedYouTube::create( $content, $attrs );
 				break;
 
 			case 'engage-sciences':
 			case 'engagesciences':
 			case 'wayin':
-				$rtn = Cheetah::create( $content, $attrs );
+				$rtn = EmbedCheetah::create( $content, $attrs );
 				break;
 
 			case 'pinterest':
-				$rtn = Pinterest::create( $content, $attrs );
+				$rtn = EmbedPinterest::create( $content, $attrs );
 				break;
 
 			default:
-				$rtn = self::create_generic_block( $content, $attrs );
+				$rtn = self::create_block( $content, $attrs );
 				break;
 		}
 
@@ -80,17 +80,17 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Creates a generic embed block
 	 *
-	 * @param  string $content Embed Url.
+	 * @param  string $content  Embed Url.
 	 * @param  array  $attrs  Attributes array.
 	 *
 	 * @return string
 	 */
-	private static function create_generic_block( string $content = '', array $attrs = [] ): string {
-		$provider = $attrs['provider'];
-
+	private static function create_block( string $content = '', array $attrs = [] ): string {
 		if ( empty( $content ) ) {
 			return '';
 		}
+
+		$attrs = self::get_attributes( $attrs );
 
 		$class_names = [
 			'wp-block-embed',
@@ -98,21 +98,20 @@ class CoreEmbed extends BlockBase {
 			'wp-has-aspect-ratio',
 		];
 
-		return self::create_gutenberg_block( $content, $provider, $class_names ) ?? '';
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
 	}
 
 
 	/**
 	 * Return the Gutenberg serialized block string
 	 *
-	 * @param  string $url Embed social url.
-	 * @param  string $provider Provider name.
-	 * @param  array  $class_names Extra classnames..
+	 * @param  string $url  Embed social url.
+	 * @param  string $provider  Provider name.
+	 * @param  array  $class_names  Extra classnames..
 	 *
 	 * @return string
 	 */
 	public static function create_gutenberg_block( string $url, string $provider, array $class_names = [] ): string {
-
 		$inner_content = self::create_inner_content( $url, $provider, $class_names );
 
 		$data = [
@@ -139,9 +138,9 @@ class CoreEmbed extends BlockBase {
 	/**
 	 * Creates the block inner content for embeds
 	 *
-	 * @param  string $url Embed social url.
-	 * @param  string $provider Provider name.
-	 * @param  array  $class_names Any additional classnames required..
+	 * @param  string $url  Embed social url.
+	 * @param  string $provider  Provider name.
+	 * @param  array  $class_names  Any additional classnames required..
 	 *
 	 * @return string
 	 */

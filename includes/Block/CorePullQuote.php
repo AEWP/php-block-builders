@@ -2,19 +2,20 @@
 /**
  * Class PullQuote
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 declare( strict_types=1 );
 
-namespace PhpBlockBuilders\Blocks;
+namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
+use PhpBlockBuilders\Element\Figure;
 
 /**
  * Class PullQuote
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 class CorePullQuote extends BlockBase {
 
@@ -30,18 +31,18 @@ class CorePullQuote extends BlockBase {
 	/**
 	 * Creates a Pull Quote block
 	 *
-	 * @param  string $content String text/html/url content.
-	 * @param  array  $attrs All required block attributes.
+	 * @param  string $content  String text/html/url content.
+	 * @param  array  $attrs  All required block attributes.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
+		$attrs         = self::get_attributes( $attrs );
 		$html          = sprintf( '<blockquote><p>%s</p></blockquote>', $attrs['content'] );
-		$inner_content = Figure::create_html( $html, [ 'classname' => 'wp-block-pullquote' ] );
+		$inner_content = Figure::create( $html, [ 'classname' => 'wp-block-pullquote' ] );
 
 		$data = [
-			'blockName'    => self::$block_name,
+			'blockName'    => $attrs['block_name'],
 			'innerContent' => [ $inner_content ],
 			'attrs'        => $attrs,
 		];

@@ -2,7 +2,7 @@
 /**
  * Block Interface
  *
- * @package PhpBlockBuilders\Blocks
+ * @package PhpBlockBuilders\Block
  */
 
 namespace PhpBlockBuilders;
@@ -13,12 +13,12 @@ namespace PhpBlockBuilders;
 interface BlockInterface {
 
 	/**
-	 * All blocks must at least create a block
+	 * All Block must at least create a block
 	 *
-	 * @param  string  $content Any text or html content
+	 * @param  string $content  Any text or html content
 	 * @param  array  $attrs  Block attributes.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ) :string;
+	public static function create( string $content = '', array $attrs = [] ): string;
 }
