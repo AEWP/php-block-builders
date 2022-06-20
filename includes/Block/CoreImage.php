@@ -37,21 +37,24 @@ class CoreImage extends BlockBase {
 	 * @return string The converted Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_attributes( $attrs );
+		$attrs         = self::get_block_names( $attrs );
 		$image_id      = absint( $content );
 		$classname     = $attrs['classname'] ?? 'wp-block-image size-large';
-		$image         = Image::create( $image_id, [ 'classname' => $classname ] );
+		$image         = Image::create( $image_id, [ 'classname' => $attrs['image_class'] ?? '' ] );
 		$inner_content = Figure::create( $image['image_html'], [ 'classname' => $classname ] );
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'mediaId'   => $image_id,
-				'mediaLink' => $image['attrs']['mediaLink'],
-				'mediaType' => 'image',
-			],
-		];
+		$data = self::get_data(
+			$attrs,
+			[ $inner_content ],
+			[
+				'attrs' => [
+					'className' => 'size-large',
+					'mediaId'   => $image_id,
+					'mediaLink' => $image['attrs']['mediaLink'],
+					'mediaType' => 'image',
+				],
+			]
+		);
 
 		return serialize_block( $data );
 	}

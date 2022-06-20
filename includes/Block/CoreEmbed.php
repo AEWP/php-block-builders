@@ -90,7 +90,7 @@ class CoreEmbed extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_attributes( $attrs );
+		$attrs = self::get_block_names( $attrs );
 
 		$class_names = [
 			'wp-block-embed',
@@ -122,14 +122,12 @@ class CoreEmbed extends BlockBase {
 			'url'              => $url,
 		];
 
-		$attributes = array_intersect_key(
+		$data['attrs'] = array_intersect_key(
 			$data,
 			array_flip(
 				[ 'type', 'providerNameSlug', 'responsive', 'url', 'className' ]
-			)
+			),
 		);
-
-		$data['attrs'] = $attributes;
 
 		return serialize_block( $data );
 	}

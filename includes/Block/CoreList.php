@@ -37,7 +37,7 @@ class CoreList extends BlockBase {
 	 * @throws \JsonException On json_decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs     = self::get_attributes( $attrs );
+		$attrs     = self::get_block_names( $attrs );
 		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$type      = $attrs['type'] ?? 'unordered';
 
@@ -47,17 +47,19 @@ class CoreList extends BlockBase {
 			filter_block_kses_value( $list_html, 'post' ) // 2
 		);
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'ordered' => 'ordered' === $type,
-				'lock'    => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
+		$data = self::get_data(
+			$attrs,
+			[ $inner_content ],
+			[
+				'attrs' => [
+					'ordered' => 'ordered' === $type,
+					'lock'    => [
+						'move'   => $attrs['lock_move'],
+						'remove' => $attrs['remove'],
+					],
 				],
-			],
-		];
+			]
+		);
 
 		return serialize_block( $data );
 

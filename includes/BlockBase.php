@@ -39,13 +39,12 @@ abstract class BlockBase implements BlockInterface {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_attributes( $attrs );
+		$attrs = self::get_block_names( $attrs );
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $content ],
-			'attrs'        => $attrs,
-		];
+		$data = self::get_data(
+			$attrs,
+			[ $content ],
+		);
 
 		return serialize_block( $data );
 
@@ -79,17 +78,67 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @return array
 	 */
-	public static function get_attributes( array $attrs ): array {
+	public static function get_block_names( array $attrs ): array {
 		$rtn = [
 			'block_name'      => static::$block_name,
 			'item_block_name' => static::$item_block_name,
-			'lock_move'       => true,
-			'remove'          => true,
 		];
 
 		return array_merge( $rtn, $attrs );
 
 	}
+
+
+	/**
+	 * Shortcut to set the lock attributes for all blocks.
+	 *
+	 * @param  array $block_attrs  All of the current block attributes.
+	 * @param  array $inner_content Inner content array.
+	 * @param  array $unique_attrs  Unique attributes required for specific block.
+	 *
+	 * @return array
+	 */
+	public static function get_data( array $block_attrs, array $inner_content = [], array $unique_attrs = [] ) : array {
+
+		$default = [
+			'blockName'    => $block_attrs['block_name'],
+			'innerContent' => $inner_content,
+			'attrs'        => [
+				'className' => $block_attrs['classname'] ?? '',
+				'id'        => $block_attrs['id'] ?? '',
+				'lock'      => [
+					'move'   => $block_attrs['lock_move'] ?? false,
+					'remove' => $block_attrs['remove'] ?? false,
+				],
+			],
+		];
+
+		return self::parse_all_args( $default, $unique_attrs );
+
+	}
+
+	/**
+	 * Recursively replace all data in defaults with $args - works on multidimensional arrays
+	 *
+	 * @param  array $args  Arguments array.
+	 * @param  array $defaults  Defaults array.
+	 *
+	 * @return array
+	 */
+	private static function parse_all_args( array $args, array $defaults ) : array {
+		$rtn = (array) $defaults;
+
+		foreach ( $args as $key => $value ) {
+			if ( is_array( $value ) && isset( $rtn[ $key ] ) ) {
+				$rtn[ $key ] = self::parse_all_args( $value, $rtn[ $key ] );
+			} else {
+				$rtn[ $key ] = $value;
+			}
+		}
+
+		return $rtn;
+	}
+
 
 
 }

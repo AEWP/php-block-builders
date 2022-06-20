@@ -33,7 +33,7 @@ class Placeholder extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_attributes( $attrs );
+		$attrs = self::get_block_names( $attrs );
 
 		$data = [
 			'blockName'    => $attrs['block_name'],

@@ -40,7 +40,8 @@ class CoreParagraph extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_attributes( $attrs );
+		$attrs = self::get_block_names( $attrs );
+
 
 		if ( isset( $attrs['classname'] ) ) {
 			$content = trim( str_replace( '<p>', "<p class=\"{$attrs['classname']}\">", $content ) );

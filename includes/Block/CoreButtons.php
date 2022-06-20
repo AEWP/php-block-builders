@@ -1,6 +1,6 @@
 <?php
 /**
- * Group Block
+ * Class CoreButtons
  *
  * @package PhpBlockBuilders\Block
  */
@@ -12,45 +12,42 @@ namespace PhpBlockBuilders\Block;
 use PhpBlockBuilders\BlockBase;
 
 /**
- * Core Group Gutenberg block.
+ * Class CoreButtons
+ *
+ * @package PhpBlockBuilders\Block
  */
-class CoreGroup extends BlockBase {
+class CoreButtons extends BlockBase {
 
 	/**
 	 * The container block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'core/group';
+	public static string $block_name = 'core/buttons';
 
 	/**
-	 * Insert an empty Core Group block to the page.
+	 * Insert an empty Core Buttons block to the page.
 	 *
 	 * @param  string $content  The block content.
-	 * @param  array  $attrs  ['tagname' => 'div', 'lock_move' => bool].
+	 * @param  array  $attrs  ['layout' => ['type' => 'flex', 'orientation' => 'vertical'].
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs   = self::get_block_names( $attrs );
-		$tagname = $attrs['tagname'] ?? 'div';
 
+		$attrs         = self::get_block_names( $attrs );
 		$inner_content = sprintf(
-			'<%1$s class="wp-block-group">%2$s</%1$s>',
-			\esc_attr( $tagname ), // 1
+			'<div class="wp-block-buttons">%1$s</div>',
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
 		$data = self::get_data(
 			$attrs,
-			[ $inner_content ],
-			[
-				'attrs' => [
-					'tagName' => \esc_attr( $tagname ),
-				],
-			]
+			[ $inner_content ]
 		);
 
 		return \serialize_block( $data );
 	}
+
+
 }

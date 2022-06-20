@@ -16,7 +16,7 @@ use PhpBlockBuilders\BlockBase;
  *
  * @package PhpBlockBuilders\Block
  */
-class CoreBlockQuote extends BlockBase {
+class CoreQuote extends BlockBase {
 
 	/**
 	 * The container block name.
@@ -34,7 +34,7 @@ class CoreBlockQuote extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_attributes( $attrs );
+		$attrs         = self::get_block_names( $attrs );
 		$cite          = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
 		$class_name    = $attrs['classname'] ? $attrs['classname'] . ' wp-block-quote' : 'wp-block-quote';
 		$inner_content = sprintf( '<blockquote class="%1s"><p>%2s</p>%3s</blockquote>', $class_name, $content, $cite );
@@ -42,7 +42,9 @@ class CoreBlockQuote extends BlockBase {
 		$data = [
 			'blockName'    => self::$block_name,
 			'innerContent' => [ $inner_content ],
-			'attrs'        => $attrs,
+			'attrs'        => [
+				'lock' => self::get_lock($attrs)
+			]
 		];
 
 		return serialize_block( $data );

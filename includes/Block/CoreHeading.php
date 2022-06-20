@@ -35,7 +35,7 @@ class CoreHeading extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_attributes( $attrs );
+		$attrs = self::get_block_names( $attrs );
 		$level = $attrs['level'] ?? 1;
 
 		$inner_content = sprintf(
@@ -44,18 +44,16 @@ class CoreHeading extends BlockBase {
 			filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$attrs = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'level' => absint( $level ),
-				'lock'  => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
+		$data = self::get_data(
+			$attrs,
+			[ $inner_content ],
+			[
+				'attrs' => [
+					'level' => absint( $level ),
 				],
-			],
-		];
+			]
+		);
 
-		return serialize_block( $attrs );
+		return serialize_block( $data );
 	}
 }
