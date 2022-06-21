@@ -39,7 +39,7 @@ abstract class BlockBase implements BlockInterface {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_block_names( $attrs );
+		$attrs = self::get_block_attrs( $attrs );
 
 		$data = self::get_data(
 			$attrs,
@@ -78,7 +78,7 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @return array
 	 */
-	public static function get_block_names( array $attrs ): array {
+	public static function get_block_attrs( array $attrs ): array {
 		$rtn = [
 			'block_name'      => static::$block_name,
 			'item_block_name' => static::$item_block_name,
@@ -106,6 +106,7 @@ abstract class BlockBase implements BlockInterface {
 			'attrs'        => [
 				'className' => $block_attrs['classname'] ?? '',
 				'id'        => $block_attrs['id'] ?? '',
+				'fontSize'  => $attrs['font_size'] ?? '',
 				'lock'      => [
 					'move'   => $block_attrs['lock_move'] ?? false,
 					'remove' => $block_attrs['remove'] ?? false,

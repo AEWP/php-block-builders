@@ -35,7 +35,7 @@ class CoreButtons extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs         = self::get_block_names( $attrs );
+		$attrs         = self::get_block_attrs( $attrs );
 		$inner_content = sprintf(
 			'<div class="wp-block-buttons">%1$s</div>',
 			\filter_block_kses_value( $content, 'post' ) // 3

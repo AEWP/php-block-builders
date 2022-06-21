@@ -90,7 +90,7 @@ class CoreEmbed extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_block_names( $attrs );
+		$attrs = self::get_block_attrs( $attrs );
 
 		$class_names = [
 			'wp-block-embed',

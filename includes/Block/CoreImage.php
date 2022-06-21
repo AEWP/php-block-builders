@@ -37,7 +37,7 @@ class CoreImage extends BlockBase {
 	 * @return string The converted Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_block_names( $attrs );
+		$attrs         = self::get_block_attrs( $attrs );
 		$image_id      = absint( $content );
 		$classname     = $attrs['classname'] ?? 'wp-block-image size-large';
 		$image         = Image::create( $image_id, [ 'classname' => $attrs['image_class'] ?? '' ] );

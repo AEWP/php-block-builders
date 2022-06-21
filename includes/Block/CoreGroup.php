@@ -32,7 +32,7 @@ class CoreGroup extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs   = self::get_block_names( $attrs );
+		$attrs   = self::get_block_attrs( $attrs );
 		$tagname = $attrs['tagname'] ?? 'div';
 
 		$inner_content = sprintf(

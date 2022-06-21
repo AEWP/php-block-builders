@@ -37,7 +37,7 @@ class CoreList extends BlockBase {
 	 * @throws \JsonException On json_decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs     = self::get_block_names( $attrs );
+		$attrs     = self::get_block_attrs( $attrs );
 		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$type      = $attrs['type'] ?? 'unordered';
 

@@ -35,7 +35,7 @@ class CoreHeading extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_block_names( $attrs );
+		$attrs = self::get_block_attrs( $attrs );
 		$level = $attrs['level'] ?? 1;
 
 		$inner_content = sprintf(

@@ -37,7 +37,7 @@ class CorePullQuote extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_block_names( $attrs );
+		$attrs         = self::get_block_attrs( $attrs );
 		$html          = sprintf( '<blockquote><p>%s</p></blockquote>', $attrs['content'] );
 		$inner_content = Figure::create( $html, [ 'classname' => 'wp-block-pullquote' ] );
 

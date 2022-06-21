@@ -26,6 +26,8 @@ class CoreButton extends BlockBase {
 	public static string $block_name = 'core/button';
 
 	/**
+	 * Create a Core Button Block
+	 *
 	 * @param  string $content The button text.
 	 * @param  array  $attrs Link attributes: ['href' => link, 'target' => '_blank', 'rel' => 'noreferrer nopener'].
 	 *
@@ -33,7 +35,7 @@ class CoreButton extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs      = self::get_block_names( $attrs );
+		$attrs      = self::get_block_attrs( $attrs );
 		$classname  = $attrs['classname'] ?? 'wp-block-button';
 		$href       = $attrs['href'];
 		$link_attrs = '';
@@ -47,6 +49,7 @@ class CoreButton extends BlockBase {
 		}
 
 		// if font size is added to attributes then customised classnames needs to be provided.
+		// @todo this is available for a lot of blocks, move into blockbase.
 		if ( $attrs['font_size'] && ! empty( $attrs['font_size'] ) !== null ) {
 			$font_size_string   = 'has-' . str_replace( [ '.', 'rem' ], [ '-', '-rem' ], $attrs['font_size'] ) . '-font-size';
 			$attrs['classname'] = $font_size_string;
@@ -70,12 +73,7 @@ class CoreButton extends BlockBase {
 
 		$data = self::get_data(
 			$attrs,
-			[ trim( $inner_content ) ],
-			[
-				'attrs' => [
-					'fontSize' => $attrs['font_size'] ?? '',
-				],
-			]
+			[ trim( $inner_content ) ]
 		);
 
 		return serialize_block( $data );
