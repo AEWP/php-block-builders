@@ -53,10 +53,6 @@ class CoreList extends BlockBase {
 			[
 				'attrs' => [
 					'ordered' => 'ordered' === $type,
-					'lock'    => [
-						'move'   => $attrs['lock_move'],
-						'remove' => $attrs['remove'],
-					],
 				],
 			]
 		);
