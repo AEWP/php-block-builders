@@ -41,16 +41,7 @@ class CoreGallery extends BlockBase {
 		$attrs     = self::get_block_attrs( $attrs );
 		$classname = $attrs['classname'] ?? 'wp-block-gallery has-nested-images columns-default is-cropped';
 		$item_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
-
-		$template = <<<'TEMPLATE'
-			<figure class="%1s">%2s</figure>
-			TEMPLATE;
-
-		$inner_content = sprintf(
-			$template,
-			$classname, // 1
-			filter_block_kses_value( $item_html, 'post' ) // 2
-		);
+		$inner_content = Figure::create(filter_block_kses_value( $item_html, 'post' ),   ['classname' => $classname ]);
 
 		$data = self::get_data(
 			$attrs,

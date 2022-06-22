@@ -42,22 +42,24 @@ class CoreParagraph extends BlockBase {
 
 		$attrs = self::get_block_attrs( $attrs );
 
+		// Ensure the content has surrounding <p> tags.
+		if ( 0 !== strpos( $content, '<p>' ) ) {
+			$content = sprintf( '<p>%s</p>', trim( str_replace( [ '<p>', '</p>' ], ' ', $content ) ) ); // Force remove any opening or closing p tags just in case of broken html - it's cheap.
+		}
 
 		if ( isset( $attrs['classname'] ) ) {
 			$content = trim( str_replace( '<p>', "<p class=\"{$attrs['classname']}\">", $content ) );
 		}
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ '<p>' . trim( $content ) . '</p>' ],
-			'attrs'        => [
-				'className' => $attrs['classname'] ?? '',
-				'lock'      => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
+		$data = self::get_data(
+			$attrs,
+			[ $content ],
+			[
+				'attrs' => [
+					'className' => $attrs['classname'] ?? '',
 				],
-			],
-		];
+			]
+		);
 
 		return serialize_block( $data );
 

@@ -26,7 +26,14 @@ class CoreTable extends BlockBase {
 	 */
 	public static string $block_name = 'core/table';
 
-
+	/**
+	 * Create a Core Table Block
+	 *
+	 * @param  string $content Table content as json string.
+	 * @param  array  $attrs Block attributes.
+	 *
+	 * @return string
+	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
 		$attrs     = self::get_block_attrs( $attrs );
@@ -51,11 +58,66 @@ class CoreTable extends BlockBase {
 	}
 
 
+	/**
+	 * Table outline as an array - ['header' => [1,2,3], 'footer' => [1,2,3], 'body => [ [1,2,3], [1,2,3] ] ].
+	 *
+	 * @param  array $attrs Table array.
+	 *
+	 * @return string
+	 */
 	public static function create_items( array $attrs ): string {
 
-		return '<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>ssss</td><td>sss</td></tr><tr><td>sssss</td><td>ssss</td></tr></tbody><tfoot><tr><td></td><td></td></tr></tfoot></table>';
+		$header = $attrs['header'] ?? [];
+		$footer = $attrs['footer'] ?? [];
+		$body   = $attrs['body'] ?? [];
+
+		$header_html = '';
+		$footer_html = '';
+		$body_html   = '';
+
+		if ( ! empty( $header ) ) {
+			$header_html = '<thead><tr>';
+			foreach ( $header as $h ) {
+				$header_html .= '<th>' . $h . '</th>';
+			}
+			$header_html .= '</tr></thead>';
+		}
+
+		if ( ! empty( $footer ) ) {
+			$footer_html = '<tfoot><tr>';
+			foreach ( $footer as $f ) {
+				$footer_html .= '<td>' . $f . '</td>';
+			}
+			$footer_html .= '</tr></tfoot>';
+		}
+
+		if ( ! empty( $body ) ) {
+			$body_html = '<tbody>';
+			foreach ( $body as $row ) {
+				$body_html .= '<tr>';
+				foreach ( $row as $d ) {
+					$body_html .= '<td>' . $d . '</td>';
+				}
+				$body_html .= '</tr>';
+			}
+			$body_html .= '</tbody>';
+		}
+
+		$template = <<<'TEMPLATE'
+			<table>
+			%1$s
+			%2$s
+			%3$s
+			</table>
+			TEMPLATE;
+
+		return sprintf(
+			$template,
+			filter_block_kses_value( $header_html, 'post' ),
+			filter_block_kses_value( $body_html, 'post' ),
+			filter_block_kses_value( $footer_html, 'post' )
+		);
 
 	}
-
 
 }
