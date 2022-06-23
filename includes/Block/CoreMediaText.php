@@ -42,13 +42,7 @@ class CoreMediaText extends BlockBase {
 
 		$image_id       = $attrs['image_id'] ?? 0;
 		$media_position = $attrs['media_position'] ?? 'right';
-
-		$block_attrs = [
-			'lock' => [
-				'move'   => true,
-				'remove' => true,
-			],
-		];
+		$block_attrs = [];
 
 		if ( $media_position === 'right' ) {
 			$block_attrs['mediaPosition'] = $media_position;
@@ -74,11 +68,13 @@ class CoreMediaText extends BlockBase {
 			filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 3
 		);
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => $block_attrs,
-		];
+		$data = self::get_data(
+			$attrs,
+			[ $inner_content ],
+			[
+				'attrs' => $block_attrs,
+			]
+		);
 
 		return serialize_block( $data );
 

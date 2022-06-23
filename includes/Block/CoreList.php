@@ -38,13 +38,13 @@ class CoreList extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 		$attrs     = self::get_block_attrs( $attrs );
-		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
+		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$type      = $attrs['type'] ?? 'unordered';
 
 		$inner_content = sprintf(
 			'<%1$s>%2$s</%1$s>',
 			( $type === 'ordered' ) ? 'ol' : 'ul', // 1
-			filter_block_kses_value( $list_html, 'post' ) // 2
+			filter_block_kses_value( $items_html, 'post' ) // 2
 		);
 
 		$data = self::get_data(
