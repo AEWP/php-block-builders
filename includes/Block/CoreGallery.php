@@ -27,6 +27,21 @@ class CoreGallery extends BlockBase {
 	 */
 	public static string $block_name = 'core/gallery';
 
+
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-gallery has-nested-images columns-default is-cropped';
+
+	/**
+	 * The items block classname
+	 *
+	 * @var string
+	 */
+	public static string $item_block_classname = 'wp-block-image size-large';
+
 	/**
 	 * Create a Gallery block.
 	 *
@@ -38,20 +53,11 @@ class CoreGallery extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_block_attrs( $attrs );
-		$classname = $attrs['classname'] ?? 'wp-block-gallery has-nested-images columns-default is-cropped';
-		$item_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
-		$inner_content = Figure::create(filter_block_kses_value( $item_html, 'post' ),   ['classname' => $classname ]);
-
-		$data = self::get_data(
-			$attrs,
-			[ $inner_content ],
-			[
-				'attrs' => [
-					'linkTo' => $attrs['link_to'] ?? 'none',
-				],
-			]
-		);
+		$data                    = self::get_data( $attrs );
+		$item_html               = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
+		$inner_content           = Figure::create( filter_block_kses_value( $item_html, 'post' ), [ 'classname' => $data['attrs']['className'] ] );
+		$data['innerContent']    = [ $inner_content ];
+		$data['attrs']['linkTo'] = $attrs['link_to'] ?? 'none';
 
 		return serialize_block( $data );
 
@@ -68,7 +74,7 @@ class CoreGallery extends BlockBase {
 
 		$rtn = '';
 		foreach ( $attrs as $image_id ) {
-			$rtn .= CoreImage::create( (string) $image_id, [ 'classname' => 'wp-block-image size-large' ] );
+			$rtn .= CoreImage::create( (string) $image_id, [ 'classname' => self::$item_block_classname ] );
 		}
 
 		return $rtn;

@@ -25,6 +25,14 @@ class CoreButton extends BlockBase {
 	 */
 	public static string $block_name = 'core/button';
 
+
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-button';
+
 	/**
 	 * Create a Core Button Block
 	 *
@@ -35,26 +43,19 @@ class CoreButton extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs      = self::get_block_attrs( $attrs );
-		$classname  = $attrs['classname'] ?? 'wp-block-button';
+		$data = self::get_data( $attrs );
+
 		$href       = $attrs['href'];
 		$link_attrs = '';
 
 		foreach ( $attrs as $k => $v ) {
-			if ( $k == 'target' || $k == 'rel' ) {
+			if ( $k === 'target' || $k === 'rel' ) {
 				if ( ! empty( $v ) ) {
 					$link_attrs .= esc_attr( $k . '=' . $v . ' ' );
 				}
 			}
 		}
 
-		// if font size is added to attributes then customised classnames needs to be provided.
-		// @todo this is available for a lot of blocks, move into blockbase.
-		if ( $attrs['font_size'] && ! empty( $attrs['font_size'] ) !== null ) {
-			$font_size_string   = 'has-' . str_replace( [ '.', 'rem' ], [ '-', '-rem' ], $attrs['font_size'] ) . '-font-size';
-			$attrs['classname'] = $font_size_string;
-			$classname         .= ' has-custom-font-size ' . $font_size_string;
-		}
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
@@ -64,17 +65,14 @@ class CoreButton extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $classname ), // 1
-			'wp-block-button__link',
-			\esc_url_raw( $href ), // 2
-			\esc_attr( $link_attrs ), // 3
-			\filter_block_kses_value( $content, 'post' ), // 4
+			\esc_attr( $data['attrs']['className'] ), // 1
+			sprintf( '%s__link', $data['attrs']['className'] ), // 2
+			\esc_url_raw( $href ), // 3
+			\esc_attr( $link_attrs ), // 4
+			\filter_block_kses_value( $content, 'post' ) // 4
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 

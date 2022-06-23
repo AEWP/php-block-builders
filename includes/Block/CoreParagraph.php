@@ -26,6 +26,9 @@ class CoreParagraph extends BlockBase {
 	public static string $block_name = 'core/paragraph';
 
 
+	public static string $block_classname = '';
+
+
 	/**
 	 * Convert paragraphs to Gutenberg Block.
 	 *
@@ -40,26 +43,18 @@ class CoreParagraph extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_block_attrs( $attrs );
+		$data = self::get_data( $attrs );
 
 		// Ensure the content has surrounding <p> tags.
 		if ( 0 !== strpos( $content, '<p>' ) ) {
 			$content = sprintf( '<p>%s</p>', trim( str_replace( [ '<p>', '</p>' ], ' ', $content ) ) ); // Force remove any opening or closing p tags just in case of broken html - it's cheap.
 		}
 
-		if ( isset( $attrs['classname'] ) ) {
-			$content = trim( str_replace( '<p>', "<p class=\"{$attrs['classname']}\">", $content ) );
+		if ( ! empty( $data['attrs']['className'] ) ) {
+			$content = trim( str_replace( '<p>', "<p class=\"{$data['attrs']['className']}\">", $content ) );
 		}
 
-		$data = self::get_data(
-			$attrs,
-			[ $content ],
-			[
-				'attrs' => [
-					'className' => $attrs['classname'] ?? '',
-				],
-			]
-		);
+		$data['innerContent'] = [ $content ];
 
 		return serialize_block( $data );
 

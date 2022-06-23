@@ -19,24 +19,31 @@ use PhpBlockBuilders\BlockBase;
 class CoreColumn extends BlockBase {
 
 	/**
-	 * The container block name.
+	 * The block name.
 	 *
 	 * @var string
 	 */
 	public static string $block_name = 'core/column';
 
+
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-column';
+
 	/**
 	 * Create a Core Columns Block
 	 *
-	 * @param  string $content The columns container.
+	 * @param  string $content The column block.
 	 * @param  array  $attrs Block attributes.
 	 *
 	 * @return string
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_block_attrs( $attrs );
-		$classname = $attrs['classname'] ?? 'wp-block-column';
+		$data = self::get_data( $attrs );
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">%2$s</div>
@@ -44,14 +51,11 @@ class CoreColumn extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $classname ), // 1
-			\filter_block_kses_value( $content, 'post' ), // 2
+			\esc_attr( $data['attrs']['className'] ), // 1
+			\filter_block_kses_value( $content, 'post' ) // 2
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 

@@ -27,6 +27,13 @@ class CoreCover extends BlockBase {
 	public static string $block_name = 'core/cover';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-cover';
+
+	/**
 	 * Create a Core Cover Block
 	 *
 	 * @param  string $content  Any cover block content text content (as blocks).
@@ -36,17 +43,17 @@ class CoreCover extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_block_attrs( $attrs );
-		$image_id  = absint( $attrs['id'] );
-		$image     = Image::create(
+		$data                  = self::get_data( $attrs );
+		$image_id              = absint( $attrs['id'] );
+		$dim_ratio             = $attrs['attrs']['dimRatio'] ?? 56;
+		$dim_ratio_closest_ten = ceil( $dim_ratio / 10 ) * 10;
+		$image                 = Image::create(
 			$image_id,
 			[
 				'classname'   => sprintf( 'wp-block-cover__image-background wp-image-%s', $image_id ),
 				'image_attrs' => [ 'data-object-fit' => $attrs['object_fit'] ?? 'cover' ],
 			]
 		);
-		$classname = $attrs['classname'] ?? 'wp-block-cover';
-		$dim_ratio = $attrs['dim_ratio'];
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
@@ -59,24 +66,16 @@ class CoreCover extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $classname ), // 1
-			\absint( $dim_ratio ), // 2
+			\esc_attr( $data['attrs']['className'] ), // 1
+			\absint( $dim_ratio_closest_ten ), // 2
 			$image['image_html'], // 3
-			\filter_block_kses_value( $content, 'post' ), // 4
+			\filter_block_kses_value( $content, 'post' ) // 4
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ],
-			[
-				'attrs' => [
-					'id'       => $image_id,
-					'url'      => $image['attrs']['mediaLink'],
-					'dimRatio' => \absint( $dim_ratio ),
-				],
-
-			]
-		);
+		$data['innerContent']      = [ $inner_content ];
+		$data['attrs']['dimRatio'] = $dim_ratio;
+		$data['attrs']['id']       = $image_id;
+		$data['attrs']['url']      = $image['attrs']['mediaLink'];
 
 		return serialize_block( $data );
 

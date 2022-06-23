@@ -24,6 +24,13 @@ class CoreGroup extends BlockBase {
 	public static string $block_name = 'core/group';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-group';
+
+	/**
 	 * Insert an empty Core Group block to the page.
 	 *
 	 * @param  string $content  The block content.
@@ -32,24 +39,23 @@ class CoreGroup extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs   = self::get_block_attrs( $attrs );
+
+		$data    = self::get_data( $attrs );
 		$tagname = $attrs['tagname'] ?? 'div';
 
+		$block_template = <<<'TEMPLATE'
+		<%1$s class="%2$s">%3$s</%1$s>
+		TEMPLATE;
+
 		$inner_content = sprintf(
-			'<%1$s class="wp-block-group">%2$s</%1$s>',
+			$block_template,
 			\esc_attr( $tagname ), // 1
+			\esc_attr( $data['attrs']['className'] ), // 2
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ $inner_content ],
-			[
-				'attrs' => [
-					'tagName' => \esc_attr( $tagname ),
-				],
-			]
-		);
+		$data['innerContent']     = [ $inner_content ];
+		$data['attrs']['tagName'] = \esc_attr( $tagname );
 
 		return \serialize_block( $data );
 	}

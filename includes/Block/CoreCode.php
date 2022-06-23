@@ -26,6 +26,13 @@ class CoreCode extends BlockBase {
 	public static string $block_name = 'core/code';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-code';
+
+	/**
 	 * Create a Core Code Block
 	 *
 	 * @param  string $content The code text.
@@ -35,8 +42,7 @@ class CoreCode extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_block_attrs( $attrs );
-		$classname = $attrs['classname'] ?? 'wp-block-code';
+		$data = self::get_data( $attrs );
 
 		$block_template = <<<'TEMPLATE'
 		<pre class="%1$s">
@@ -46,14 +52,11 @@ class CoreCode extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $classname ), // 1
-			\filter_block_kses_value( $content, 'post' ), // 2
+			\esc_attr( $data['attrs']['className'] ), // 1
+			\filter_block_kses_value( $content, 'post' ) // 2
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 

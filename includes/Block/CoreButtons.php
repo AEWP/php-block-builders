@@ -26,6 +26,13 @@ class CoreButtons extends BlockBase {
 	public static string $block_name = 'core/buttons';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-buttons';
+
+	/**
 	 * Insert an empty Core Buttons block to the page.
 	 *
 	 * @param  string $content  The block content.
@@ -35,16 +42,19 @@ class CoreButtons extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs         = self::get_block_attrs( $attrs );
+		$data = self::get_data( $attrs );
+
+		$block_template = <<<'TEMPLATE'
+		<div class="%1$s">%2$s</div>
+		TEMPLATE;
+
 		$inner_content = sprintf(
-			'<div class="wp-block-buttons">%1$s</div>',
-			\filter_block_kses_value( $content, 'post' ) // 3
+			$block_template,
+			\esc_attr( $data['attrs']['className'] ), // 1
+			\filter_block_kses_value( $content, 'post' ) // 2
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ $inner_content ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return \serialize_block( $data );
 	}
