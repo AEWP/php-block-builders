@@ -29,6 +29,14 @@ class CoreMediaText extends BlockBase {
 	 */
 	public static string $block_name = 'core/media-text';
 
+
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-media-text';
+
 	/**
 	 * Convert Salesforce text to Gutenberg equivalent.
 	 *
@@ -38,43 +46,38 @@ class CoreMediaText extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_block_attrs( $attrs );
+
+		$data = self::get_data( $attrs );
 
 		$image_id       = $attrs['image_id'] ?? 0;
 		$media_position = $attrs['media_position'] ?? 'right';
-		$block_attrs    = [];
-
-		if ( $media_position === 'right' ) {
-			$block_attrs['mediaPosition'] = $media_position;
-		}
-
-		$image       = Image::create( absint( $image_id ) );
-		$image_html  = $image['image_html'];
-		$block_attrs = array_merge( $block_attrs, $image['attrs'] );
+		$image          = Image::create( absint( $image_id ) );
+		$image_html     = $image['image_html'];
 
 		$block_template = <<<'TEMPLATE'
-		<div class="wp-block-media-text alignwide %1s is-stacked-on-mobile">
-		<figure class="wp-block-media-text__media">%2$s</figure>
-		<div class="wp-block-media-text__content">
-		%3$s
+		<div class="%1$s alignwide %2$s is-stacked-on-mobile">
+		<figure class="%1$s__media">%3$s</figure>
+		<div class="%1$s__content">
+		%4$s
 		</div>
 		</div>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
-			$media_position === 'right' ? esc_attr( "has-media-on-the-{$media_position}" ) : '', // 1
-			$image_html, // 2
-			filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 3
+			\esc_attr( $data['attrs']['className'] ), // 1
+			$media_position === 'right' ? esc_attr( "has-media-on-the-{$media_position}" ) : '', // 2
+			$image_html, // 3
+			filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 4
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ $inner_content ],
-			[
-				'attrs' => $block_attrs,
-			]
-		);
+		$data['innerContent']       = [ $inner_content ];
+		$data['attrs']['mediaId']   = $image['attrs']['mediaId'] ?? '';
+		$data['attrs']['mediaLink'] = $image['attrs']['mediaLink'] ?? '';
+		$data['attrs']['mediaType'] = 'image';
+		if ( $media_position === 'right' ) {
+			$data['attrs']['mediaPosition'] = $media_position;
+		}
 
 		return serialize_block( $data );
 
