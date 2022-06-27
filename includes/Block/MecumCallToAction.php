@@ -35,26 +35,18 @@ class MecumCallToAction extends BlockBase {
 	/**
 	 * Create a Mecum Call to Action block
 	 *
-	 * @param  string $content
-	 * @param  array  $attrs
+	 * @param  string $content  Json encoded string from array.
+	 * ['image_id' => 0, 'heading' => 'text', 'paragraph' => 'text', 'button'=> ['text' => 'text', 'href'=> 'url', 'target' => '' ].
+	 * @param  array  $attrs  Block attributes.
 	 *
 	 * @return string
+	 * @throws \JsonException On json decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$heading   = CoreHeading::create(
-			'Call to Action',
-			[
-				'level' => 2,
-			]
-		);
-		$paragraph = CoreParagraph::create( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur consectetur, nisi nisl consectetur nisi, euismod consectetur nisi nisi euismod nisi.' );
-		$button    = CoreButton::create( 'hola' );
-		$buttons   = CoreButtons::create( $button );
+		$data       = self::get_data( $attrs );
+		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 
-		$cover = CoreCover::create( $heading . $paragraph . $buttons, [ 'id' => 5 ] );
-
-		$data           = self::get_data( $attrs );
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
 		%2$s
@@ -64,12 +56,35 @@ class MecumCallToAction extends BlockBase {
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
-			$cover // 2
+			$items_html // 2
 		);
 
 		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
+
+	}
+
+	/**
+	 * Create the items for the block.
+	 *
+	 * @param  array $attrs  The items to create.
+	 *
+	 * @return string The items html.
+	 */
+	public static function create_items( array $attrs ): string {
+
+		$heading   = CoreHeading::create(
+			$attrs['title'] ?? '',
+			[
+				'level' => 2,
+			]
+		);
+		$paragraph = CoreParagraph::create( $attrs['paragraph'] ?? '' );
+		$button    = CoreButton::create( $attrs['button']['text'], $attrs['button'] );
+		$buttons   = CoreButtons::create( $button );
+
+		return CoreCover::create( $heading . $paragraph . $buttons, [ 'id' => $attrs['image_id'] ] );
 
 	}
 
