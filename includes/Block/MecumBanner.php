@@ -54,6 +54,7 @@ class MecumBanner extends BlockBase {
 					'className'         => 'wp-block-column is-vertically-aligned-center',
 					'verticalAlignment' => 'center',
 					'width'             => '20%',
+					'style'             => 'flex-basis:20%',
 				],
 			]
 		);
@@ -76,15 +77,17 @@ class MecumBanner extends BlockBase {
 					'className'         => 'wp-block-column is-vertically-aligned-center',
 					'verticalAlignment' => 'center',
 					'width'             => '20%',
+					'style'             => 'flex-basis:20%',
 				],
 			]
 		);
 
 		// 2 columns
-		$columns_container = CoreColumns::create(
+		$inner_content = CoreColumns::create(
 			$column_one . $columns_two,
 			[
 				'attrs' => [
+					'className'         => 'wp-block-columns are-vertically-aligned-center',
 					'isStackedOnMobile' => 'false',
 					'verticalAlignment' => 'center',
 				],
@@ -98,7 +101,7 @@ class MecumBanner extends BlockBase {
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
-			\filter_block_kses_value( $columns_container, 'post' ), // 2
+			$inner_content, // 2
 		);
 
 		$data['innerContent']                = [ $inner_content ];

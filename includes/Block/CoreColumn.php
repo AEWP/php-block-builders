@@ -45,12 +45,13 @@ class CoreColumn extends BlockBase {
 		$data = self::get_data( $attrs );
 
 		$block_template = <<<'TEMPLATE'
-		<div class="%1$s">%2$s</div>
+		<div class="%1$s" style="%2$s">%3$s</div>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
+			\esc_attr( $data['attrs']['style'] ), // 1
 			\filter_block_kses_value( $content, 'post' ) // 2
 		);
 

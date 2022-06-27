@@ -57,8 +57,7 @@ class CoreCover extends BlockBase {
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
-			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-%2$s has-background-dim"></span>
-			%3$s
+			<span aria-hidden="true" class="has-background-dim-%2$s wp-block-cover__gradient-background has-background-dim"></span>%3$s
 			<div class="wp-block-cover__inner-container">
 			%4$s
 		</div></div>
