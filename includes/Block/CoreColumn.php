@@ -25,7 +25,6 @@ class CoreColumn extends BlockBase {
 	 */
 	public static string $block_name = 'core/column';
 
-
 	/**
 	 * The block classname.
 	 *
