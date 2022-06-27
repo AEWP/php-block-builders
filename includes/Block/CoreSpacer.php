@@ -26,6 +26,13 @@ class CoreSpacer extends BlockBase {
 	public static string $block_name = 'core/spacer';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-spacer';
+
+	/**
 	 * Create a Core Spacer Block
 	 *
 	 * @param  string $content In this instance content is ignored.
@@ -35,22 +42,19 @@ class CoreSpacer extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs       = self::get_block_attrs( $attrs );
-		$classname   = $attrs['classname'] ?? 'wp-block-spacer';
+		$data = self::get_data( $attrs );
+
 		$height      = $attrs['height'] ?? 100;
 		$aria_hidden = $attrs['hidden'] ?? 'true';
 
 		$inner_content = sprintf(
 			'<div class="%1$s" style="height:%2$dpx" aria-hidden="%3$s"></div>',
-			\esc_attr( $classname ),
-			\absint( $height ),
-			\esc_attr( $aria_hidden )
+			\esc_attr( $data['attrs']['className'] ), // 1
+			\absint( $height ), // 2
+			\esc_attr( $aria_hidden ) // 3
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 	}

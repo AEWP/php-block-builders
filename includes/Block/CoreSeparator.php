@@ -26,6 +26,12 @@ class CoreSeparator extends BlockBase {
 	public static string $block_name = 'core/separator';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-separator';
+	/**
 	 * Create a Core Separator Block
 	 *
 	 * @param  string $content In this instance content is ignored.
@@ -35,14 +41,13 @@ class CoreSeparator extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs         = self::get_block_attrs( $attrs );
-		$classname     = $attrs['classname'] ?? 'wp-block-separator';
-		$inner_content = sprintf( '<hr class="%s"/>', $classname );
-
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
+		$data          = self::get_data( $attrs );
+		$inner_content = sprintf(
+			'<hr class="%s"/>',
+			\esc_attr( $data['attrs']['className'] )
 		);
+
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 	}
