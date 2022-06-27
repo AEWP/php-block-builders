@@ -21,7 +21,14 @@ class Placeholder extends BlockBase {
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'block/placeholder';
+	public static string $block_name = 'generic/placeholder';
+
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = '';
 
 
 	/**
@@ -33,19 +40,10 @@ class Placeholder extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_block_attrs( $attrs );
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [],
-			'attrs'        => [
-				'text' => wp_strip_all_tags( $content, true ),
-				'lock' => [
-					'move'   => $attrs['lock_move'],
-					'remove' => true,
-				],
-			],
-		];
+		$data                  = self::get_data( $attrs );
+		$data['innerContent']  = [];
+		$data['attrs']['text'] = \wp_strip_all_tags( $content, true );
 
 		return serialize_block( $data );
 	}
