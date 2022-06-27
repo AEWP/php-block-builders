@@ -26,6 +26,13 @@ class CoreQuote extends BlockBase {
 	public static string $block_name = 'core/quote';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-quote';
+
+	/**
 	 * Insert a  Quote block to the page.
 	 *
 	 * @param  string $content  String text/html/url content.
@@ -34,18 +41,16 @@ class CoreQuote extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_block_attrs( $attrs );
-		$cite          = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
-		$class_name    = $attrs['classname'] ? $attrs['classname'] . ' wp-block-quote' : 'wp-block-quote';
-		$inner_content = sprintf( '<blockquote class="%1s"><p>%2s</p>%3s</blockquote>', $class_name, $content, $cite );
 
-		$data = [
-			'blockName'    => self::$block_name,
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'lock' => self::get_lock( $attrs ),
-			],
-		];
+		$data                 = self::get_data( $attrs );
+		$cite                 = $attrs['cite'] ? sprintf( '<cite>%s</cite>', $attrs['cite'] ) : '';
+		$inner_content        = sprintf(
+			'<blockquote class="%1s"><p>%2s</p>%3s</blockquote>',
+			\esc_attr( $data['attrs']['className'] ),
+			\filter_block_kses_value( $content, 'post' ),
+			\filter_block_kses_value( $cite, 'post' )
+		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 
