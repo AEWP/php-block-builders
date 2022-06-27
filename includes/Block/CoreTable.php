@@ -27,6 +27,13 @@ class CoreTable extends BlockBase {
 	public static string $block_name = 'core/table';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-table';
+
+	/**
 	 * Create a Core Table Block
 	 *
 	 * @param  string $content Table content as json string.
@@ -36,22 +43,18 @@ class CoreTable extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs     = self::get_block_attrs( $attrs );
-		$classname = $attrs['classname'] ?? 'wp-block-table';
+		$data = self::get_data( $attrs );
 
 		$table_content = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 		$inner_content = Figure::create(
 			$table_content,
 			[
-				'classname'  => $classname,
+				'classname'  => \esc_attr( $data['attrs']['className'] ),
 				'figcaption' => $attrs['figcaption'] ?? '',
 			]
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ trim( $inner_content ) ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 
