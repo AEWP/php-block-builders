@@ -32,20 +32,14 @@ class EmbedCheetah extends CoreEmbed {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_block_names( $attrs );
-		$url           = esc_url( $content );
-		$embed_id      = ltrim( wp_parse_url( $url, PHP_URL_PATH ), 'embed/' );
-		$inner_content = "<div class=\"wp-block-Block-cheetah block-embed\">{$url}</div>";
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'url'              => $url,
-				'embedId'          => $embed_id,
-				'providerNameSlug' => $attrs['provider'],
-			],
-		];
+		$data                              = self::get_data( $attrs );
+		$embed_id                          = ltrim( wp_parse_url( $content, PHP_URL_PATH ), 'embed/' );
+		$inner_content                     = sprintf( '<div class="wp-block-Block-cheetah block-embed">%s</div>', $content );
+		$data['innerContent']              = [ $inner_content ];
+		$data['attrs']['url']              = \esc_url( $content );
+		$data['attrs']['embedId']          = \esc_attr( $embed_id );
+		$data['attrs']['providerNameSlug'] = $attrs['provider'];
 
 		return serialize_block( $data );
 	}
