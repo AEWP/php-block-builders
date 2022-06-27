@@ -56,7 +56,6 @@ class CoreButton extends BlockBase {
 			}
 		}
 
-
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
 			<a class=%2$s href=%3$s %4$s>%5$s</a>

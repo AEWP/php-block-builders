@@ -25,7 +25,11 @@ class CoreParagraph extends BlockBase {
 	 */
 	public static string $block_name = 'core/paragraph';
 
-
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
 	public static string $block_classname = '';
 
 

@@ -42,7 +42,7 @@ class CoreMediaText extends BlockBase {
 
 		$image_id       = $attrs['image_id'] ?? 0;
 		$media_position = $attrs['media_position'] ?? 'right';
-		$block_attrs = [];
+		$block_attrs    = [];
 
 		if ( $media_position === 'right' ) {
 			$block_attrs['mediaPosition'] = $media_position;

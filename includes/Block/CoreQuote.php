@@ -43,8 +43,8 @@ class CoreQuote extends BlockBase {
 			'blockName'    => self::$block_name,
 			'innerContent' => [ $inner_content ],
 			'attrs'        => [
-				'lock' => self::get_lock($attrs)
-			]
+				'lock' => self::get_lock( $attrs ),
+			],
 		];
 
 		return serialize_block( $data );

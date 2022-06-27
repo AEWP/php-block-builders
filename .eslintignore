@@ -1,8 +1,0 @@
-.*.js
-assets/js/vendor
-assets/js/admin/vendor
-assets/js/frontend/vendor
-assets/js/shared/vendor
-dist/*
-vendor/*
-webpack.config.js

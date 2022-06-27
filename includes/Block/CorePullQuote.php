@@ -42,7 +42,7 @@ class CorePullQuote extends BlockBase {
 		$html          = sprintf( '<blockquote><p>%1$s</p>%2$s</blockquote>', $content, $cite );
 		$inner_content = Figure::create( $html, [ 'classname' => 'wp-block-pullquote' ] );
 
-		$data          = self::get_data(
+		$data = self::get_data(
 			$attrs,
 			[ $inner_content ]
 		);
