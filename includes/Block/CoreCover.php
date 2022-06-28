@@ -13,7 +13,7 @@ use PhpBlockBuilders\BlockBase;
 use PhpBlockBuilders\Element\Image;
 
 /**
- * Class CoreHtml
+ * Class CoreCover
  *
  * @package PhpBlockBuilders\Block
  */
