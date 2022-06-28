@@ -11,7 +11,6 @@ namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
-use function filter_block_kses_value;
 
 /**
  * Core List Gutenberg block.
@@ -28,6 +27,13 @@ class CoreList extends BlockBase {
 	public static string $block_name = 'core/list';
 
 	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = '';
+
+	/**
 	 * Create a list block from json encoded content array for items.
 	 *
 	 * @param  string $content  json encoded list items string.
@@ -37,27 +43,23 @@ class CoreList extends BlockBase {
 	 * @throws \JsonException On json_decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs     = self::get_attributes( $attrs );
-		$list_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
-		$type      = $attrs['type'] ?? 'unordered';
+
+		$data       = self::get_data( $attrs );
+		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
+		$type       = $attrs['type'] ?? 'unordered';
+
+		$block_template = <<<'TEMPLATE'
+		<%1$s>%2$s</%1$s>
+		TEMPLATE;
 
 		$inner_content = sprintf(
-			'<%1$s>%2$s</%1$s>',
+			$block_template,
 			( $type === 'ordered' ) ? 'ol' : 'ul', // 1
-			filter_block_kses_value( $list_html, 'post' ) // 2
+			\filter_block_kses_value( $items_html, 'post' ) // 2
 		);
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'ordered' => 'ordered' === $type,
-				'lock'    => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
-				],
-			],
-		];
+		$data['innerContent']     = [ $inner_content ];
+		$data['attrs']['ordered'] = 'ordered' === $type;
 
 		return serialize_block( $data );
 

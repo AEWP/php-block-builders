@@ -31,6 +31,20 @@ abstract class BlockBase implements BlockInterface {
 	public static string $item_block_name = 'block/base-item';
 
 	/**
+	 * Optional block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-base';
+
+	/**
+	 * Optional item block classname
+	 *
+	 * @var string
+	 */
+	public static string $item_block_classname = 'wp-block-base-item';
+
+	/**
 	 * Return a string representation of each block.
 	 *
 	 * @param  string $content  String text/html/url content.
@@ -39,13 +53,9 @@ abstract class BlockBase implements BlockInterface {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_attributes( $attrs );
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $content ],
-			'attrs'        => $attrs,
-		];
+		$data                 = self::get_data( $attrs );
+		$data['innerContent'] = [ $content ];
 
 		return serialize_block( $data );
 
@@ -72,24 +82,56 @@ abstract class BlockBase implements BlockInterface {
 		return implode( PHP_EOL, $rtn );
 	}
 
+
 	/**
-	 * Set some sensible attributes that all Block can use, merge with input attrs.
+	 * Shortcut to set the lock attributes for all blocks.
 	 *
-	 * @param  array $attrs
+	 * @param  array $input_data  All of the current block attributes.
 	 *
 	 * @return array
 	 */
-	public static function get_attributes( array $attrs ): array {
-		$rtn = [
-			'block_name'      => static::$block_name,
-			'item_block_name' => static::$item_block_name,
-			'lock_move'       => true,
-			'remove'          => true,
+	public static function get_data( array $input_data ) : array {
+
+		$default = [
+			'blockName' => $input_data['block_name'] ?? static::$block_name,
+			'attrs'     => [
+				'className' => $input_data['attrs']['className'] ?? static::$block_classname,
+				'id'        => $input_data['attrs']['id'] ?? '',
+				'fontSize'  => $input_data['attrs']['fontSize'] ?? '',
+				'lock'      => [
+					'move'   => $input_data['attrs']['lock']['move'] ?? false,
+					'remove' => $input_data['attrs']['lock']['remove'] ?? false,
+				],
+			],
 		];
 
-		return array_merge( $rtn, $attrs );
+		return self::merge_arrays_deep( $input_data, $default );
 
 	}
+
+
+	/**
+	 * Recursively replace all data in defaults with $args - works on multidimensional arrays
+	 *
+	 * @param  array $args  Arguments array.
+	 * @param  array $defaults  Defaults array.
+	 *
+	 * @return array
+	 */
+	protected static function merge_arrays_deep( array $args, array $defaults ) : array {
+		$rtn = (array) $defaults;
+
+		foreach ( $args as $key => $value ) {
+			if ( is_array( $value ) && isset( $rtn[ $key ] ) ) {
+				$rtn[ $key ] = self::merge_arrays_deep( $value, $rtn[ $key ] );
+			} else {
+				$rtn[ $key ] = $value;
+			}
+		}
+
+		return $rtn;
+	}
+
 
 
 }

@@ -25,6 +25,13 @@ class CoreParagraph extends BlockBase {
 	 */
 	public static string $block_name = 'core/paragraph';
 
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = '';
+
 
 	/**
 	 * Convert paragraphs to Gutenberg Block.
@@ -40,23 +47,18 @@ class CoreParagraph extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_attributes( $attrs );
+		$data = self::get_data( $attrs );
 
-		if ( isset( $attrs['classname'] ) ) {
-			$content = trim( str_replace( '<p>', "<p class=\"{$attrs['classname']}\">", $content ) );
+		// Ensure the content has surrounding <p> tags.
+		if ( 0 !== strpos( $content, '<p>' ) ) {
+			$content = sprintf( '<p>%s</p>', trim( str_replace( [ '<p>', '</p>' ], ' ', $content ) ) ); // Force remove any opening or closing p tags just in case of broken html - it's cheap.
 		}
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ '<p>' . trim( $content ) . '</p>' ],
-			'attrs'        => [
-				'className' => $attrs['classname'] ?? '',
-				'lock'      => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
-				],
-			],
-		];
+		if ( ! empty( $data['attrs']['className'] ) ) {
+			$content = trim( str_replace( '<p>', "<p class=\"{$data['attrs']['className']}\">", $content ) );
+		}
+
+		$data['innerContent'] = [ $content ];
 
 		return serialize_block( $data );
 

@@ -15,7 +15,7 @@ interface BlockInterface {
 	/**
 	 * All Block must at least create a block
 	 *
-	 * @param  string $content  Any text or html content
+	 * @param  string $content  Any text or html content.
 	 * @param  array  $attrs  Block attributes.
 	 *
 	 * @return string

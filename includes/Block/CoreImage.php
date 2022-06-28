@@ -27,6 +27,13 @@ class CoreImage extends BlockBase {
 	 */
 	public static string $block_name = 'core/image';
 
+	/**
+	 * The container block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-image';
+
 
 	/**
 	 * Creates a Core Image Block.
@@ -37,21 +44,23 @@ class CoreImage extends BlockBase {
 	 * @return string The converted Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs         = self::get_attributes( $attrs );
-		$image_id      = absint( $content );
-		$classname     = $attrs['classname'] ?? 'wp-block-image size-large';
-		$image         = Image::create( $image_id, [ 'classname' => $classname ] );
-		$inner_content = Figure::create( $image['image_html'], [ 'classname' => $classname ] );
+		$data = self::get_data( $attrs );
 
-		$data = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'mediaId'   => $image_id,
-				'mediaLink' => $image['attrs']['mediaLink'],
-				'mediaType' => 'image',
-			],
-		];
+		$image_id      = absint( $content );
+		$image         = Image::create( $image_id, [ 'classname' => $data['image_class'] ?? '' ] );
+		$inner_content = Figure::create(
+			$image['image_html'],
+			[
+				'classname'  => $data['attrs']['className'],
+				'figcaption' => $data['figcaption'] ?? '',
+			]
+		);
+
+		$data['innerContent']       = [ $inner_content ];
+		$data['attrs']['className'] = 'size-large';
+		$data['attrs']['mediaId']   = $image_id;
+		$data['attrs']['mediaLink'] = $image['attrs']['mediaLink'];
+		$data['attrs']['mediaType'] = 'image';
 
 		return serialize_block( $data );
 	}

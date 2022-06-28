@@ -11,9 +11,6 @@ namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 
-use function absint;
-use function filter_block_kses_value;
-
 /**
  * Core Heading Gutenberg block.
  */
@@ -27,6 +24,13 @@ class CoreHeading extends BlockBase {
 	public static string $block_name = 'core/heading';
 
 	/**
+	 * Block Classname
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = '';
+
+	/**
 	 * Insert a Core Heading block to the page.
 	 *
 	 * @param  string $content  The block content.
@@ -35,27 +39,23 @@ class CoreHeading extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-		$attrs = self::get_attributes( $attrs );
+
+		$data  = self::get_data( $attrs );
 		$level = $attrs['level'] ?? 1;
 
+		$block_template = <<<'TEMPLATE'
+		<h%1$s>%2$s</h%1$s>
+		TEMPLATE;
+
 		$inner_content = sprintf(
-			'<h%1$s>%2$s</h%1$s>',
-			absint( $level ), // 1
-			filter_block_kses_value( $content, 'post' ) // 3
+			$block_template,
+			\absint( $level ), // 1
+			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$attrs = [
-			'blockName'    => $attrs['block_name'],
-			'innerContent' => [ $inner_content ],
-			'attrs'        => [
-				'level' => absint( $level ),
-				'lock'  => [
-					'move'   => $attrs['lock_move'],
-					'remove' => $attrs['remove'],
-				],
-			],
-		];
+		$data['innerContent']   = [ $inner_content ];
+		$data['attrs']['level'] = $level;
 
-		return serialize_block( $attrs );
+		return serialize_block( $data );
 	}
 }

@@ -26,10 +26,13 @@ class Figure {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 		$classname  = $attrs['classname'] ?? '';
-		$figcaption = ( isset( $attrs['figcaption'] ) ) ? sprintf( '<figcaption>%s</figcaption>', $attrs['figcaption'] ) : '';
+		$figcaption = ( isset( $attrs['figcaption'] ) && ! empty( $attrs['figcaption'] ) ) ? sprintf( '<figcaption>%s</figcaption>', $attrs['figcaption'] ) : '';
 
 		$template = <<<'TEMPLATE'
-			<figure class="%1s">%2s%3s</figure>
+			<figure class="%1s">
+			%2$s
+			%3$s
+			</figure>
 			TEMPLATE;
 
 		return sprintf( $template, esc_attr( $classname ), $content, $figcaption );

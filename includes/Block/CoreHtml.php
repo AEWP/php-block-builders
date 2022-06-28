@@ -25,5 +25,12 @@ class CoreHtml extends BlockBase {
 	 */
 	public static string $block_name = 'core/html';
 
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = '';
+
 
 }

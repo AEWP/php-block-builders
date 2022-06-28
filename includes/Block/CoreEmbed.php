@@ -90,7 +90,7 @@ class CoreEmbed extends BlockBase {
 			return '';
 		}
 
-		$attrs = self::get_attributes( $attrs );
+		$provider_name = $attrs['provider'];
 
 		$class_names = [
 			'wp-block-embed',
@@ -98,7 +98,7 @@ class CoreEmbed extends BlockBase {
 			'wp-has-aspect-ratio',
 		];
 
-		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
+		return self::create_gutenberg_block( $content, $provider_name, $class_names ) ?? '';
 	}
 
 
@@ -122,14 +122,12 @@ class CoreEmbed extends BlockBase {
 			'url'              => $url,
 		];
 
-		$attributes = array_intersect_key(
+		$data['attrs'] = array_intersect_key(
 			$data,
 			array_flip(
 				[ 'type', 'providerNameSlug', 'responsive', 'url', 'className' ]
-			)
+			),
 		);
-
-		$data['attrs'] = $attributes;
 
 		return serialize_block( $data );
 	}
