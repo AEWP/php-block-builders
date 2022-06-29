@@ -48,10 +48,16 @@ class MecumTestimonial extends BlockBase {
 			(string) $attrs['image_id'],
 			[
 				'attrs' => [
-					'className' => 'wp-block-image is-style-rounded',
+					'className' => 'aligncenter',
 					'align'     => 'center',
 				],
 			]
+		);
+
+		$image = str_replace(
+			[ '<figure', '</figure>' ],
+			[ '<div class="wp-block-image is-style-rounded"><figure', '</figure></div>' ],
+			$image
 		);
 
 		$quote = CoreQuote::create(
@@ -59,7 +65,7 @@ class MecumTestimonial extends BlockBase {
 			[
 				'cite'  => $attrs['cite'] ?? '',
 				'attrs' => [
-					'className' => 'wp-block-quote ihas-text-align-center',
+					'className' => 'wp-block-quote has-text-align-center',
 					'align'     => 'center',
 				],
 			]
