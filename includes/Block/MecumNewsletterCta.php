@@ -35,8 +35,8 @@ class MecumNewsletterCta extends BlockBase {
 	/**
 	 * Create a Mecum Newsletter CTA Block
 	 *
-	 * @param  string $content
-	 * @param  array  $attrs
+	 * @param  string $content Content array as a json string.
+	 * @param  array  $attrs Block attributes.
 	 *
 	 * @return string
 	 */
@@ -61,6 +61,13 @@ class MecumNewsletterCta extends BlockBase {
 
 	}
 
+	/**
+	 * Create the items html from the items array.
+	 *
+	 * @param  array $attrs Content array.
+	 *
+	 * @return string
+	 */
 	public static function create_items( array $attrs ): string {
 
 			$title        = CoreHeading::create( $attrs['title'] ?? '', [ 'level' => 2 ] );
