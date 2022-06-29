@@ -47,6 +47,7 @@ class CoreCover extends BlockBase {
 		$image_id              = absint( $attrs['id'] );
 		$dim_ratio             = $attrs['attrs']['dimRatio'] ?? 56;
 		$dim_ratio_closest_ten = ceil( $dim_ratio / 10 ) * 10;
+		$span_class            = $attrs['span_class'] ?? 'has-background-dim-' . $dim_ratio_closest_ten . ' wp-block-cover__gradient-background has-background-dim';
 		$image                 = Image::create(
 			$image_id,
 			[
@@ -57,7 +58,7 @@ class CoreCover extends BlockBase {
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
-			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-%2$s has-background-dim"></span>
+			<span aria-hidden="true" class="%2$s"></span>
 			%3$s
 			<div class="wp-block-cover__inner-container">
 			%4$s
@@ -67,7 +68,7 @@ class CoreCover extends BlockBase {
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
-			\absint( $dim_ratio_closest_ten ), // 2
+			$span_class, // 2
 			$image['image_html'], // 3
 			\filter_block_kses_value( $content, 'post' ) // 4
 		);
