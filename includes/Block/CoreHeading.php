@@ -40,9 +40,9 @@ class CoreHeading extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$data  = self::get_data( $attrs );
-		$level = $attrs['level'] ?? 1;
-		$class_name = (isset($attrs['attrs']['className'])) ? 'class="' . $attrs['attrs']['className'] . '"' : '';
+		$data       = self::get_data( $attrs );
+		$level      = $attrs['level'] ?? 1;
+		$class_name = ( isset( $attrs['attrs']['className'] ) ) ? 'class="' . $attrs['attrs']['className'] . '"' : '';
 
 		$block_template = <<<'TEMPLATE'
 		<h%1$s %2$s>%3$s</h%1$s>
