@@ -61,7 +61,7 @@ class MecumStats extends BlockBase {
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
-			\filter_block_kses_value( $items_html, 'post' ), // 2
+			$items_html, // 2
 		);
 
 		$data['innerContent'] = [ $inner_content ];
