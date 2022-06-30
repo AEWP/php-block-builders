@@ -41,12 +41,11 @@ class MecumAccordion extends BlockBase {
 
 
 	/**
-	 * Optional item block classname
+	 * The items block classname.
 	 *
 	 * @var string
 	 */
 	public static string $item_block_classname = 'wp-block-mecum-accordion-item';
-
 
 	/**
 	 * Create the accordion block
@@ -70,7 +69,7 @@ class MecumAccordion extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $data['attrs']['className'] ), // 2
+			\esc_attr( $data['attrs']['className'] ), // 1
 			filter_block_kses_value( $items_html, 'post' ) // 2
 		);
 

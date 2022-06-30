@@ -1,6 +1,6 @@
 <?php
 /**
- * Class MecumNewsletterCta
+ * Class MecumTile
  *
  * @package PhpBlockBuilders\Block
  */
@@ -12,33 +12,36 @@ namespace PhpBlockBuilders\Block;
 use PhpBlockBuilders\BlockBase;
 
 /**
- * Class MecumNewsletterCta
+ * Class MecumTile
  *
  * @package PhpBlockBuilders\Block
  */
-class MecumNewsletterCta extends BlockBase {
+class MecumTile extends BlockBase {
 
 	/**
 	 * The block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'mecum/newsletter-cta';
+	public static string $block_name = 'mecum/tile';
 
 	/**
 	 * The block classname.
 	 *
 	 * @var string
 	 */
-	public static string $block_classname = 'wp-block-mecum-newsletter-cta';
+	public static string $block_classname = 'wp-block-mecum-tile';
 
 	/**
-	 * Create a Mecum Newsletter CTA Block
+	 * Create a Mecum Tile Block
 	 *
-	 * @param  string $content Content array as a json string.
-	 * @param  array  $attrs Block attributes.
+	 * @param  string $content  The tile content array as json string.
+	 * ['title' => 'title', 'paragraph' => 'paragraph', 'image_id' => '0' ].
+	 *
+	 * @param  array  $attrs  Block attributes. ['attrs' => ['url' => 'link', 'linkText] => 'link text' ] ].
 	 *
 	 * @return string
+	 * @throws \JsonException On json decode error.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
@@ -64,19 +67,29 @@ class MecumNewsletterCta extends BlockBase {
 	/**
 	 * Create the items html from the items array.
 	 *
-	 * @param  array $attrs Content array.
+	 * @param  array $attrs  Content array.
 	 *
 	 * @return string
 	 */
 	public static function create_items( array $attrs ): string {
+		$rtn = '';
 
-			$title        = CoreHeading::create( $attrs['title'] ?? '', [ 'level' => 2 ] );
-			$paragraph    = CoreParagraph::create( $attrs['paragraph'] ?? '' );
-			$gravity_form = GravityFormsForm::create( (string) ( $attrs['gravity_form_id'] ?? '' ) );
+		if ( empty( $attrs ) ) {
+			return $rtn;
+		}
 
-			return CoreCover::create( $title . $paragraph . $gravity_form, [ 'id' => (string) ( $attrs['image_id'] ?? 0 ) ] );
+		$rtn .= CoreImage::create( $attrs['image_id'] ?? '', [ 'attrs' => [ 'className' => 'wp-block-image size-large tile__image' ] ] );
+
+		// Create the main title and paragraph.
+		$rtn .= CoreHeading::create(
+			$attrs['title'] ?? '',
+			[
+				'level' => 3,
+			]
+		);
+		$rtn .= CoreParagraph::create( $attrs['paragraph'] ?? '' );
+
+		return $rtn;
 
 	}
-
-
 }
