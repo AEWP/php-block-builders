@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CoreColumn
+ * Class MecumTabItem
  *
  * @package PhpBlockBuilders\Block
  */
@@ -12,30 +12,30 @@ namespace PhpBlockBuilders\Block;
 use PhpBlockBuilders\BlockBase;
 
 /**
- * Class CoreColumn
+ * Class MecumTabItem
  *
  * @package PhpBlockBuilders\Block
  */
-class CoreColumn extends BlockBase {
+class MecumTabItem extends BlockBase {
 
 	/**
 	 * The block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'core/column';
+	public static string $block_name = 'mecum/tab-item';
 
 	/**
 	 * The block classname.
 	 *
 	 * @var string
 	 */
-	public static string $block_classname = 'wp-block-column';
+	public static string $block_classname = 'wp-block-mecum-tab-item';
 
 	/**
-	 * Create a Core Columns Block
+	 * Create a Mecum Tabs Block
 	 *
-	 * @param  string $content The column block.
+	 * @param  string $content The tab container.
 	 * @param  array  $attrs Block attributes.
 	 *
 	 * @return string
@@ -45,14 +45,17 @@ class CoreColumn extends BlockBase {
 		$data = self::get_data( $attrs );
 
 		$block_template = <<<'TEMPLATE'
-		<div class="%1$s" style="%2$s">%3$s</div>
+		<div class="%1$s">
+		%2$s
+		%3$s
+		</div>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
-			\esc_attr( $data['attrs']['style'] ), // 1
-			\filter_block_kses_value( $content, 'post' ) // 2
+			\esc_attr( sprintf( '<h3>%s</h3>', $attrs['attrs']['title'] ) ), // 2
+			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
 		$data['innerContent'] = [ $inner_content ];

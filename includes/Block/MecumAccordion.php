@@ -32,6 +32,20 @@ class MecumAccordion extends BlockBase {
 	 */
 	public static string $item_block_name = 'mecum/accordion-item';
 
+	/**
+	 * The block classname.
+	 *
+	 * @var string
+	 */
+	public static string $block_classname = 'wp-block-mecum-accordion';
+
+
+	/**
+	 * The items block classname.
+	 *
+	 * @var string
+	 */
+	public static string $item_block_classname = 'wp-block-mecum-accordion-item';
 
 	/**
 	 * Create the accordion block
@@ -44,8 +58,7 @@ class MecumAccordion extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$attrs      = self::get_block_attrs( $attrs );
-		$classname  = $attrs['classname'] ?? 'wp-block-mecum-accordion';
+		$data       = self::get_data( $attrs );
 		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
 
 		$block_template = <<<'TEMPLATE'
@@ -56,14 +69,11 @@ class MecumAccordion extends BlockBase {
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $classname ), // 1
+			\esc_attr( $data['attrs']['className'] ), // 1
 			filter_block_kses_value( $items_html, 'post' ) // 2
 		);
 
-		$data = self::get_data(
-			$attrs,
-			[ $inner_content ]
-		);
+		$data['innerContent'] = [ $inner_content ];
 
 		return serialize_block( $data );
 	}
@@ -78,8 +88,7 @@ class MecumAccordion extends BlockBase {
 	 */
 	public static function create_items( array $attrs ): string {
 
-		$rtn       = '';
-		$classname = $attrs['classname'] ?? 'wp-block-mecum-accordion-item';
+		$rtn = '';
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">
@@ -93,7 +102,7 @@ class MecumAccordion extends BlockBase {
 
 				$inner_content = sprintf(
 					$block_template,
-					esc_attr( $classname ),
+					esc_attr( self::$item_block_classname ),
 					esc_html( $item['title'] ?? '' ),
 					filter_block_kses_value( $item['body'], 'post' )
 				);

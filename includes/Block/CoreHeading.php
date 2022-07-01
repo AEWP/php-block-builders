@@ -40,16 +40,18 @@ class CoreHeading extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$data  = self::get_data( $attrs );
-		$level = $attrs['level'] ?? 1;
+		$data       = self::get_data( $attrs );
+		$level      = $attrs['level'] ?? 1;
+		$class_name = ( isset( $attrs['attrs']['className'] ) ) ? 'class="' . $attrs['attrs']['className'] . '"' : '';
 
 		$block_template = <<<'TEMPLATE'
-		<h%1$s>%2$s</h%1$s>
+		<h%1$s %2$s>%3$s</h%1$s>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
 			\absint( $level ), // 1
+			$class_name, // 2
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 

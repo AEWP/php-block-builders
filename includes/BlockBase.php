@@ -105,6 +105,19 @@ abstract class BlockBase implements BlockInterface {
 			],
 		];
 
+		// Set the class variables, so they can be reused with any input values.
+		self::$block_name = $default['blockName'];
+
+		self::$block_classname = $default['attrs']['className'];
+
+		if ( isset( $input_data['item_block_name'] ) && ! empty( $input_data['item_block_name'] ) ) {
+			self::$item_block_name = $input_data['item_block_name'];
+		}
+
+		if ( isset( $input_data['item_block_classname'] ) && ! empty( $input_data['item_block_classname'] ) ) {
+			self::$item_block_classname = $input_data['item_block_classname'];
+		}
+
 		return self::merge_arrays_deep( $input_data, $default );
 
 	}

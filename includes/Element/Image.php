@@ -54,7 +54,7 @@ class Image {
 
 			$image_template =
 				<<<'TEMPLATE'
-				<img src="%1$s" alt="%2$s" class="%3$s" %4$s/>
+				<img src="%1$s" alt="%2$s" class="%3$s" %4$s />
 				TEMPLATE;
 
 			$rtn['image_html'] = sprintf(
@@ -62,7 +62,7 @@ class Image {
 				esc_url( $attachment_url ), // 1
 				esc_attr( $alt ), // 2
 				esc_attr( $classname ), // 3
-				esc_attr( $image_attrs ) // 4
+				esc_attr( trim( $image_attrs ) ) // 4
 			);
 
 			$rtn['attrs']['mediaId']   = $image_id;
