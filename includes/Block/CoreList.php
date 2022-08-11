@@ -68,16 +68,19 @@ class CoreList extends BlockBase {
 	/**
 	 * Create all the list items.
 	 *
-	 * @param  array $items  Array of list item content.
+	 * @param  array $attrs  Array of list item content.
 	 *
 	 * @return string
 	 */
-	public static function create_items( array $items ): string {
+	public static function create_items( array $attrs ): string {
 		$rtn = '';
-		if ( ! empty( $items ) ) {
-			foreach ( $items as $li ) {
-				$rtn .= '<li>' . $li . '</li>';
-			}
+
+		if ( empty( $attrs ) ) {
+			return '<li></li>';
+		}
+
+		foreach ( $attrs as $li ) {
+			$rtn .= '<li>' . $li . '</li>';
 		}
 
 		return $rtn;
