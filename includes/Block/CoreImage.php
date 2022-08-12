@@ -46,13 +46,21 @@ class CoreImage extends BlockBase {
 	public static function create( string $content = '', array $attrs = [] ): string {
 		$data = self::get_data( $attrs );
 
-		$image_id      = absint( $content );
-		$image         = Image::create( $image_id, [ 'classname' => $data['image_class'] ?? '' ] );
+		$image_id = absint( $content );
+		$image    = Image::create(
+			$image_id,
+			[
+				'classname' => $data['image_class'] ?? '',
+				'url'       => $data['url'] ?? '',
+				'alt'       => $data['alt'] ?? '',
+			]
+		);
+
 		$inner_content = Figure::create(
 			$image['image_html'],
 			[
 				'classname'  => $data['attrs']['className'],
-				'figcaption' => $data['figcaption'] ?? '',
+				'figcaption' => $data['caption'] ?? '',
 			]
 		);
 
