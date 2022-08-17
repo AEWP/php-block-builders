@@ -47,11 +47,11 @@ class CoreMediaText extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
 
-		$data = self::get_data( $attrs );
-
+		$data           = self::get_data( $attrs );
 		$image_id       = $attrs['image_id'] ?? 0;
+		$image_data     = $data['image'] ?? [];
 		$media_position = $attrs['media_position'] ?? 'right';
-		$image          = Image::create( absint( $image_id ) );
+		$image          = Image::create( $image_id, $image_data );
 		$image_html     = $image['image_html'];
 
 		$block_template = <<<'TEMPLATE'
