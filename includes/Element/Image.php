@@ -32,7 +32,7 @@ class Image {
 	public static function create( int $image_id, array $attrs = [] ): array {
 		$rtn = [];
 
-		$classname      = '';
+		$classname      = $attrs['classname'] ?? '';
 		$alt            = $attrs['alt'] ?? '';
 		$attachment_url = $attrs['url'] ?? '';
 		$image_attrs    = '';
@@ -45,7 +45,7 @@ class Image {
 
 		if ( isset( $attrs['image_attrs'] ) ) {
 			foreach ( $attrs['image_attrs'] as $k => $v ) {
-				$image_attrs .= ' ' . $k . '="' . $v . '"';
+				$image_attrs .= ' ' . \esc_attr( $k ) . '="' . \esc_attr( $v ) . '"';
 			}
 		}
 
@@ -59,7 +59,7 @@ class Image {
 			esc_url( $attachment_url ), // 1
 			esc_attr( $alt ), // 2
 			esc_attr( $classname ), // 3
-			esc_attr( trim( $image_attrs ) ) // 4
+			trim( $image_attrs ) // 4
 		);
 
 		$rtn['attrs']['mediaId']   = $image_id;

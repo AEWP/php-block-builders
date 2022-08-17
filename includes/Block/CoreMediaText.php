@@ -11,9 +11,11 @@ namespace PhpBlockBuilders\Block;
 
 use PhpBlockBuilders\BlockBase;
 use PhpBlockBuilders\Element\Image;
+use PhpBlockBuilders\Element\Figure;
 
 use function esc_attr;
 use function filter_block_kses_value;
+use function absint;
 
 /**
  * Core Media & Text Gutenberg block.
@@ -46,17 +48,27 @@ class CoreMediaText extends BlockBase {
 	 * @return string The Gutenberg-compatible output.
 	 */
 	public static function create( string $content = '', array $attrs = [] ): string {
-
 		$data           = self::get_data( $attrs );
-		$image_id       = $attrs['image_id'] ?? 0;
-		$image_data     = $data['image'] ?? [];
-		$media_position = $attrs['media_position'] ?? 'right';
-		$image          = Image::create( $image_id, $image_data );
-		$image_html     = $image['image_html'];
+		$image_id       = absint( $data['attrs']['id'] ?? 0 );
+		$media_position = $data['attrs']['media_position'] ?? 'right';
+		$image          = Image::create(
+			$image_id,
+			[
+				'url' => $data['attrs']['url'] ?? '',
+				'alt' => $data['attrs']['alt'] ?? wp_strip_all_tags( $content ),
+			]
+		);
+		$figure         = Figure::create(
+			$image['image_html'],
+			[
+				'classname'  => $data['attrs']['className'] . '__media',
+				'figcaption' => $data['attrs']['figcaption'] ?? '',
+			]
+		);
 
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s alignwide %2$s is-stacked-on-mobile">
-		<figure class="%1$s__media">%3$s</figure>
+		%3$s
 		<div class="%1$s__content">
 		%4$s
 		</div>
@@ -67,12 +79,12 @@ class CoreMediaText extends BlockBase {
 			$block_template,
 			\esc_attr( $data['attrs']['className'] ), // 1
 			$media_position === 'right' ? esc_attr( "has-media-on-the-{$media_position}" ) : '', // 2
-			$image_html, // 3
+			$figure, // 3
 			filter_block_kses_value( CoreParagraph::create( $content ), 'post' ) // 4
 		);
 
 		$data['innerContent']       = [ $inner_content ];
-		$data['attrs']['mediaId']   = $image['attrs']['mediaId'] ?? '';
+		$data['attrs']['mediaId']   = $image_id;
 		$data['attrs']['mediaLink'] = $image['attrs']['mediaLink'] ?? '';
 		$data['attrs']['mediaType'] = 'image';
 		if ( $media_position === 'right' ) {
