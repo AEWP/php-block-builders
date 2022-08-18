@@ -37,13 +37,13 @@ class CoreButtons extends BlockBase {
 	 *
 	 * @param  string $content  The block content.
 	 * @param  array  $attrs  ['layout' => ['type' => 'flex', 'orientation' => 'vertical'].
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
-		$data = self::get_data( $attrs );
-
+		$data           = self::get_data( $attrs );
 		$block_template = <<<'TEMPLATE'
 		<div class="%1$s">%2$s</div>
 		TEMPLATE;
@@ -56,7 +56,7 @@ class CoreButtons extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return \serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 	}
 
 

@@ -21,11 +21,12 @@ class EmbedPinterest extends CoreEmbed {
 	 *
 	 * @param  string $content  Embed url.
 	 * @param  array  $attrs  Attributes array.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
-		return self::create_gutenberg_block( $content, $attrs['provider'] ) ?? '';
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
+		return self::create_gutenberg_block( $content, $attrs['provider'], [], $render ) ?? '';
 	}
 
 }

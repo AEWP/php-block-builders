@@ -37,10 +37,11 @@ class CoreColumns extends BlockBase {
 	 *
 	 * @param  string $content The columns container.
 	 * @param  array  $attrs Block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data = self::get_data( $attrs );
 
@@ -56,7 +57,7 @@ class CoreColumns extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 

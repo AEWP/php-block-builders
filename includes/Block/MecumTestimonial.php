@@ -37,10 +37,11 @@ class MecumTestimonial extends BlockBase {
 	 *
 	 * @param  string $content  The banner content.
 	 * @param  array  $attrs  Block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data = self::get_data( $attrs );
 
@@ -54,6 +55,7 @@ class MecumTestimonial extends BlockBase {
 			]
 		);
 
+		// @todo refactor this into sprintf, wrap the image in the div
 		$image = str_replace(
 			[ '<figure', '</figure>' ],
 			[ '<div class="wp-block-image is-style-rounded"><figure', '</figure></div>' ],
@@ -83,7 +85,7 @@ class MecumTestimonial extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 

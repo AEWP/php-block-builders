@@ -35,10 +35,11 @@ class CoreGroup extends BlockBase {
 	 *
 	 * @param  string $content  The block content.
 	 * @param  array  $attrs  ['tagname' => 'div', 'lock_move' => bool].
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data    = self::get_data( $attrs );
 		$tagname = $attrs['tagname'] ?? 'div';
@@ -57,6 +58,6 @@ class CoreGroup extends BlockBase {
 		$data['innerContent']     = [ $inner_content ];
 		$data['attrs']['tagName'] = \esc_attr( $tagname );
 
-		return \serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 	}
 }

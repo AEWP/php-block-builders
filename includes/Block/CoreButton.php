@@ -38,13 +38,13 @@ class CoreButton extends BlockBase {
 	 *
 	 * @param  string $content The button text.
 	 * @param  array  $attrs Link attributes: ['href' => link, 'target' => '_blank', 'rel' => 'noreferrer nopener'].
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
-		$data = self::get_data( $attrs );
-
+		$data       = self::get_data( $attrs );
 		$href       = $attrs['href'];
 		$link_attrs = '';
 
@@ -73,7 +73,7 @@ class CoreButton extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 
