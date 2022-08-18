@@ -66,15 +66,28 @@ class CoreGallery extends BlockBase {
 	/**
 	 * Return all a collection of Image blocks as html string.
 	 *
-	 * @param  array $attrs WP Attachment ID array.
+	 * @param  array $attrs WP Attchment ID array.
 	 *
 	 * @return string
 	 */
 	public static function create_items( array $attrs ): string {
 
 		$rtn = '';
-		foreach ( $attrs as $image_id ) {
-			$rtn .= CoreImage::create( (string) $image_id, [ 'attrs' => [ 'className' => self::$item_block_classname ] ] );
+		foreach ( $attrs as $image ) {
+
+			$image_id = isset( $image['id'] ) ? (string) $image['id'] : '';
+
+			$rtn .= CoreImage::create(
+				$image_id,
+				[
+					'attrs' => [
+						'url'        => $image['url'] ?? '',
+						'alt'        => $image['alt'] ?? '',
+						'figcaption' => $image['caption'] ?? '',
+						'classname'  => self::$item_block_classname,
+					],
+				]
+			);
 		}
 
 		return $rtn;
