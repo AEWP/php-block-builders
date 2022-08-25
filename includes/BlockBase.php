@@ -49,17 +49,34 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @param  string $content  String text/html/url content.
 	 * @param  array  $attrs  All required block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data                 = self::get_data( $attrs );
 		$data['innerContent'] = [ $content ];
 
-		return serialize_block( $data );
-
+		return self::return_block_html( $data, $render );
 	}
+
+	/**
+	 * Return the block html as either full serialized html or rendered without
+	 *
+	 * @param  array $data Block data.
+	 * @param  bool  $render Should this block render (without comments) or serialize.
+	 *
+	 * @return string
+	 */
+	public static function return_block_html( array $data = [], bool $render = false ): string {
+		if ( true === $render ) {
+			return render_block( $data );
+		}
+
+		return serialize_block( $data );
+	}
+
 
 	/**
 	 * Create all the block inner / content items.

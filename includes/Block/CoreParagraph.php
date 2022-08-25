@@ -38,10 +38,11 @@ class CoreParagraph extends BlockBase {
 	 *
 	 * @param  string $content  String text/html content.
 	 * @param  array  $attrs  All required block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The converted Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 		// Don't create empty paragraphs - this exists due to older editors allowing for empty p tags.
 		if ( empty( trim( $content ) ) ) {
 			return '';
@@ -60,7 +61,7 @@ class CoreParagraph extends BlockBase {
 
 		$data['innerContent'] = [ $content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 

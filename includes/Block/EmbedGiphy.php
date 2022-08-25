@@ -29,16 +29,17 @@ class EmbedGiphy extends CoreEmbed {
 	 *
 	 * @param  string $content  String url content.
 	 * @param  array  $attrs  All required block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 		$class_names = [
 			'wp-block-embed-Block-giphy',
 			'wp-block-embed',
 		];
 
-		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names ) ?? '';
+		return self::create_gutenberg_block( $content, $attrs['provider'], $class_names, $render ) ?? '';
 	}
 
 }

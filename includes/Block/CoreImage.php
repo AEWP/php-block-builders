@@ -40,19 +40,19 @@ class CoreImage extends BlockBase {
 	 *
 	 * @param  string $content  Image id.
 	 * @param  array  $attrs  All required block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string The converted Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
-		$data = self::get_data( $attrs );
-
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
+		$data     = self::get_data( $attrs );
 		$image_id = absint( $content );
 		$image    = Image::create(
 			$image_id,
 			[
 				'classname' => $data['image_class'] ?? '',
-				'url'       => $data['url'] ?? '',
-				'alt'       => $data['alt'] ?? '',
+				'url'       => $data['attrs']['url'] ?? '',
+				'alt'       => $data['attrs']['alt'] ?? '',
 			]
 		);
 
@@ -60,17 +60,17 @@ class CoreImage extends BlockBase {
 			$image['image_html'],
 			[
 				'classname'  => $data['attrs']['className'],
-				'figcaption' => $data['caption'] ?? '',
+				'figcaption' => $data['attrs']['figcaption'] ?? '',
 			]
 		);
 
 		$data['innerContent']       = [ $inner_content ];
-		$data['attrs']['className'] = 'size-large';
+		$data['attrs']['className'] = $data['attrs']['className'] ?? 'size-large';
 		$data['attrs']['mediaId']   = $image_id;
 		$data['attrs']['mediaLink'] = $image['attrs']['mediaLink'];
-		$data['attrs']['mediaType'] = 'image';
+		$data['attrs']['mediaType'] = $data['attrs']['mediaType'] ?? 'image';
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 	}
 
 

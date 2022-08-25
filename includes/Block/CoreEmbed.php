@@ -33,44 +33,44 @@ class CoreEmbed extends BlockBase {
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 		if ( empty( $attrs ) && ! is_array( $attrs ) ) {
 			return '';
 		}
 
 		switch ( $attrs['provider'] ) {
 			case 'twitter':
-				$rtn = EmbedTwitter::create( $content, $attrs );
+				$rtn = EmbedTwitter::create( $content, $attrs, $render );
 				break;
 
 			case 'tiktok':
-				$rtn = EmbedTikTok::create( $content, $attrs );
+				$rtn = EmbedTikTok::create( $content, $attrs, $render );
 				break;
 
 			case 'instagram':
-				$rtn = EmbedInstagram::create( $content, $attrs );
+				$rtn = EmbedInstagram::create( $content, $attrs, $render );
 				break;
 
 			case 'giphy':
-				$rtn = EmbedGiphy::create( $content, $attrs );
+				$rtn = EmbedGiphy::create( $content, $attrs, $render );
 				break;
 
 			case 'youtube':
-				$rtn = EmbedYouTube::create( $content, $attrs );
+				$rtn = EmbedYouTube::create( $content, $attrs, $render );
 				break;
 
 			case 'engage-sciences':
 			case 'engagesciences':
 			case 'wayin':
-				$rtn = EmbedCheetah::create( $content, $attrs );
+				$rtn = EmbedCheetah::create( $content, $attrs, $render );
 				break;
 
 			case 'pinterest':
-				$rtn = EmbedPinterest::create( $content, $attrs );
+				$rtn = EmbedPinterest::create( $content, $attrs, $render );
 				break;
 
 			default:
-				$rtn = self::create_block( $content, $attrs );
+				$rtn = self::create_block( $content, $attrs, $render );
 				break;
 		}
 
@@ -82,10 +82,11 @@ class CoreEmbed extends BlockBase {
 	 *
 	 * @param  string $content  Embed Url.
 	 * @param  array  $attrs  Attributes array.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	private static function create_block( string $content = '', array $attrs = [] ): string {
+	private static function create_block( string $content = '', array $attrs = [], bool $render = false ): string {
 		if ( empty( $content ) ) {
 			return '';
 		}
@@ -98,7 +99,7 @@ class CoreEmbed extends BlockBase {
 			'wp-has-aspect-ratio',
 		];
 
-		return self::create_gutenberg_block( $content, $provider_name, $class_names ) ?? '';
+		return self::create_gutenberg_block( $content, $provider_name, $class_names, $render ) ?? '';
 	}
 
 
@@ -108,10 +109,11 @@ class CoreEmbed extends BlockBase {
 	 * @param  string $url  Embed social url.
 	 * @param  string $provider  Provider name.
 	 * @param  array  $class_names  Extra classnames..
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create_gutenberg_block( string $url, string $provider, array $class_names = [] ): string {
+	public static function create_gutenberg_block( string $url, string $provider, array $class_names = [], bool $render = false ): string {
 		$inner_content = self::create_inner_content( $url, $provider, $class_names );
 
 		$data = [
@@ -129,7 +131,7 @@ class CoreEmbed extends BlockBase {
 			),
 		);
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 	}
 
 

@@ -39,11 +39,12 @@ class MecumTile extends BlockBase {
 	 * ['title' => 'title', 'paragraph' => 'paragraph', 'image_id' => '0' ].
 	 *
 	 * @param  array  $attrs  Block attributes. ['attrs' => ['url' => 'link', 'linkText] => 'link text' ] ].
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 * @throws \JsonException On json decode error.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data       = self::get_data( $attrs );
 		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
@@ -60,7 +61,7 @@ class MecumTile extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 

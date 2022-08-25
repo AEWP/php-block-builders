@@ -37,12 +37,13 @@ class CoreCover extends BlockBase {
 	 * Create a Core Cover Block
 	 *
 	 * @param  string $content  Any cover block content text content (as blocks).
-	 * @param  array  $attrs  Block attributes ['id' => 'WP Attachment ID', 'dim_ratio' => 'dimRatio', 'object_fit' =>
-	 *     'image data object fit'].
+	 * @param  array  $attrs  Block attributes ['attrs' => [ 'id' => 'WP Attachment ID', 'dim_ratio' => 'dimRatio', 'object_fit' =>
+	 *     'image data object fit'] ].
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 		$data                  = self::get_data( $attrs );
 		$image_id              = absint( $attrs['attrs']['id'] ?? 0 );
 		$dim_ratio             = $attrs['attrs']['dimRatio'] ?? 56;
@@ -83,7 +84,7 @@ class CoreCover extends BlockBase {
 
 		$data['attrs']['url'] = $image['attrs']['mediaLink'];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 

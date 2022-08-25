@@ -43,13 +43,13 @@ class MecumStats extends BlockBase {
 	 *
 	 * @param  string $content  The banner content array as json string
 	 * ['title' => 'main title', 'paragraph' => 'main paragraph','columns'   => [ ['title' => 'title', 'paragraph' => 'paragraph'], ['title' => 'title', 'paragraph' => 'paragraph' ]]].
-	 *
 	 * @param  array  $attrs  Block attributes.
+	 * @param  bool   $render Should this block render (without comments) or serialize.
 	 *
 	 * @return string
 	 * @throws \JsonException On json decode error.
 	 */
-	public static function create( string $content = '', array $attrs = [] ): string {
+	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data       = self::get_data( $attrs );
 		$items_html = self::create_items( json_decode( $content, true, 512, JSON_THROW_ON_ERROR ) );
@@ -66,7 +66,7 @@ class MecumStats extends BlockBase {
 
 		$data['innerContent'] = [ $inner_content ];
 
-		return serialize_block( $data );
+		return parent::return_block_html( $data, $render );
 
 	}
 
