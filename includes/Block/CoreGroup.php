@@ -42,7 +42,7 @@ class CoreGroup extends BlockBase {
 	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data    = self::get_data( $attrs );
-		$tagname = $attrs['tagname'] ?? 'div';
+		$tagname = $attrs['attrs']['tagName'] ?? 'div';
 
 		$block_template = <<<'TEMPLATE'
 		<%1$s class="%2$s">%3$s</%1$s>
@@ -51,7 +51,7 @@ class CoreGroup extends BlockBase {
 		$inner_content = sprintf(
 			$block_template,
 			\esc_attr( $tagname ), // 1
-			\esc_attr( $data['attrs']['className'] ), // 2
+			\esc_attr( self::get_element_classname( $data ) ), // 2
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 

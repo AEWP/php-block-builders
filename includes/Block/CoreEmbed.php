@@ -30,6 +30,7 @@ class CoreEmbed extends BlockBase {
 	 *
 	 * @param  string $content  String text/html/url content.
 	 * @param  array  $attrs  All required block attributes.
+	 * @param  bool   $render Render boolean - edit or fe.
 	 *
 	 * @return string The Gutenberg-compatible output.
 	 */

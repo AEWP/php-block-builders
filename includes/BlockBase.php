@@ -116,8 +116,8 @@ abstract class BlockBase implements BlockInterface {
 				'id'        => $input_data['attrs']['id'] ?? '',
 				'fontSize'  => $input_data['attrs']['fontSize'] ?? '',
 				'lock'      => [
-					'move'   => $input_data['attrs']['lock']['move'] ?? false,
-					'remove' => $input_data['attrs']['lock']['remove'] ?? false,
+					'move'   => $input_data['attrs']['lock']['move'] ?? true,
+					'remove' => $input_data['attrs']['lock']['remove'] ?? true,
 				],
 			],
 		];
@@ -138,6 +138,19 @@ abstract class BlockBase implements BlockInterface {
 		return self::merge_arrays_deep( $input_data, $default );
 
 	}
+
+	/**
+	 * If an elementClassName attribute exists return that to use for actual dom elements
+	 *
+	 * @todo this should be based on values in attrs sub array
+	 * @param  array $data Input data array.
+	 *
+	 * @return string
+	 */
+	public static function get_element_classname( array $data ) : string {
+		return $data['elementClassName'] ?? $data['attrs']['className'];
+	}
+
 
 
 	/**

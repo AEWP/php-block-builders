@@ -50,13 +50,14 @@ class CoreList extends BlockBase {
 		$type       = $attrs['type'] ?? 'unordered';
 
 		$block_template = <<<'TEMPLATE'
-		<%1$s>%2$s</%1$s>
+		<%1$s class=%2$s>%3$s</%1$s>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
 			( $type === 'ordered' ) ? 'ol' : 'ul', // 1
-			\filter_block_kses_value( $items_html, 'post' ) // 2
+			self::get_element_classname( $data ), // 2
+			\filter_block_kses_value( $items_html, 'post' ) // 3
 		);
 
 		$data['innerContent']     = [ $inner_content ];
