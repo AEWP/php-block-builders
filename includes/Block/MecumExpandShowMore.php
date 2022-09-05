@@ -35,7 +35,7 @@ class MecumExpandShowMore extends BlockBase {
 
 
 	/**
-	 * Create a Mecum Newsletter CTA Block
+	 * Create a Mecum Expand Show More Block
 	 *
 	 * @param  string $content  Content array as a json string.
 	 * @param  array  $attrs  Block attributes.
