@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CoreSeparator
+ * Class CoreReadMore
  *
  * @package PhpBlockBuilders\Block
  */
@@ -12,25 +12,25 @@ namespace PhpBlockBuilders\Block;
 use PhpBlockBuilders\BlockBase;
 
 /**
- * Class CoreSeparator
+ * Class CoreReadMore
  *
  * @package PhpBlockBuilders\Block
  */
-class CoreSeparator extends BlockBase {
+class CoreReadMore extends BlockBase {
 
 	/**
 	 * The container block name.
 	 *
 	 * @var string
 	 */
-	public static string $block_name = 'core/separator';
+	public static string $block_name = 'core/read-more';
 
 	/**
 	 * The block classname.
 	 *
 	 * @var string
 	 */
-	public static string $block_classname = 'wp-block-separator';
+	public static string $block_classname = 'wp-block-read-more';
 	/**
 	 * Create a Core Separator Block
 	 *
@@ -42,13 +42,8 @@ class CoreSeparator extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
-		$data          = self::get_data( $attrs );
-		$inner_content = sprintf(
-			'<hr class="%s"/>',
-			self::get_element_classname( $data )
-		);
-
-		$data['innerContent'] = [ $inner_content ];
+		$data                 = self::get_data( $attrs );
+		$data['innerContent'] = [];
 
 		return parent::return_block_html( $data, $render );
 	}

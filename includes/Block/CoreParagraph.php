@@ -48,15 +48,16 @@ class CoreParagraph extends BlockBase {
 			return '';
 		}
 
-		$data = self::get_data( $attrs );
+		$data              = self::get_data( $attrs );
+		$element_classname = self::get_element_classname( $data );
 
 		// Ensure the content has surrounding <p> tags.
 		if ( 0 !== strpos( $content, '<p>' ) ) {
 			$content = sprintf( '<p>%s</p>', trim( str_replace( [ '<p>', '</p>' ], ' ', $content ) ) ); // Force remove any opening or closing p tags just in case of broken html - it's cheap.
 		}
 
-		if ( ! empty( $data['attrs']['className'] ) ) {
-			$content = trim( str_replace( '<p>', "<p class=\"{$data['attrs']['className']}\">", $content ) );
+		if ( $element_classname !== self::$block_classname ) {
+			$content = trim( str_replace( '<p>', "<p class=\"{$element_classname}\">", $content ) );
 		}
 
 		$data['innerContent'] = [ $content ];
