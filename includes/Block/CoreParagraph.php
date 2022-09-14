@@ -51,6 +51,9 @@ class CoreParagraph extends BlockBase {
 		$data              = self::get_data( $attrs );
 		$element_classname = self::get_element_classname( $data );
 
+		// Set the original content without wrapping <p> into attrs.
+		$data['attrs']['content'] = \filter_block_kses_value( $content, 'post' );
+
 		// Ensure the content has surrounding <p> tags.
 		if ( 0 !== strpos( $content, '<p>' ) ) {
 			$content = sprintf( '<p>%s</p>', trim( str_replace( [ '<p>', '</p>' ], ' ', $content ) ) ); // Force remove any opening or closing p tags just in case of broken html - it's cheap.

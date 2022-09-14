@@ -56,8 +56,9 @@ class CoreHeading extends BlockBase {
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$data['innerContent']   = [ $inner_content ];
-		$data['attrs']['level'] = $level;
+		$data['innerContent']     = [ $inner_content ];
+		$data['attrs']['level']   = $level;
+		$data['attrs']['content'] = \filter_block_kses_value( $content, 'post' );
 
 		return parent::return_block_html( $data, $render );
 	}
