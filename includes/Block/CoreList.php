@@ -62,6 +62,7 @@ class CoreList extends BlockBase {
 
 		$data['innerContent']     = [ $inner_content ];
 		$data['attrs']['ordered'] = 'ordered' === $type;
+		$data['attrs']['values'] = self::json_encode_clean_string( $items_html );
 
 		return parent::return_block_html( $data, $render );
 

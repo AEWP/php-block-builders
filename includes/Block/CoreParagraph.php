@@ -52,7 +52,7 @@ class CoreParagraph extends BlockBase {
 		$element_classname = self::get_element_classname( $data );
 
 		// Set the original content without wrapping <p> into attrs.
-		$data['attrs']['content'] = \filter_block_kses_value( $content, 'post' );
+		$data['attrs']['content'] = self::json_encode_clean_string( $content );
 
 		// Ensure the content has surrounding <p> tags.
 		if ( 0 !== strpos( $content, '<p>' ) ) {
