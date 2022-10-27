@@ -52,7 +52,7 @@ class CoreImage extends BlockBase {
 			[
 				'classname' => $data['image_class'] ?? '',
 				'url'       => $data['attrs']['url'] ?? '',
-				'alt'       => $data['attrs']['alt'] ?? '',
+				'alt'       => $data['attrs']['alt'] ?? ( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ?? '' ),
 			]
 		);
 
