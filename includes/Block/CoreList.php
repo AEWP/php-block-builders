@@ -62,7 +62,6 @@ class CoreList extends BlockBase {
 
 		$data['innerContent']     = [ $inner_content ];
 		$data['attrs']['ordered'] = 'ordered' === $type;
-		$data['attrs']['values'] = self::json_encode_clean_string( $items_html );
 
 		return parent::return_block_html( $data, $render );
 
@@ -79,11 +78,11 @@ class CoreList extends BlockBase {
 		$rtn = '';
 
 		if ( empty( $attrs ) ) {
-			return '<li></li>';
+			return '<!-- wp:list-item --><li></li><!-- /wp:list-item -->';
 		}
 
 		foreach ( $attrs as $li ) {
-			$rtn .= '<li>' . $li . '</li>';
+			$rtn .= '<!-- wp:list-item --><li>' . $li . '</li><!-- /wp:list-item -->';
 		}
 
 		return $rtn;
