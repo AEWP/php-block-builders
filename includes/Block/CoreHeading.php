@@ -43,6 +43,8 @@ class CoreHeading extends BlockBase {
 
 		$data           = self::get_data( $attrs );
 		$level          = $attrs['level'] ?? 1;
+		$font_size      = $attrs['fontSize'] ?? '';
+		$text_align     = $attrs['textAlign'] ?? 'text-left';
 		$class_name_att = 'class="' . self::get_element_classname( $data ) . '"';
 
 		$block_template = <<<'TEMPLATE'
@@ -56,9 +58,11 @@ class CoreHeading extends BlockBase {
 			\filter_block_kses_value( $content, 'post' ) // 3
 		);
 
-		$data['innerContent']     = [ $inner_content ];
-		$data['attrs']['level']   = $level;
-		$data['attrs']['content'] = self::json_encode_clean_string( $content );
+		$data['innerContent']       = [ $inner_content ];
+		$data['attrs']['content']   = self::json_encode_clean_string( $content );
+		$data['attrs']['fontSize']  = $font_size;
+		$data['attrs']['level']     = $level;
+		$data['attrs']['textAlign'] = $text_align;
 
 		return parent::return_block_html( $data, $render );
 	}

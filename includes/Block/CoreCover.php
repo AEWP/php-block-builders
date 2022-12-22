@@ -45,35 +45,47 @@ class CoreCover extends BlockBase {
 	 */
 	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 		$data                  = self::get_data( $attrs );
+		$image                 = null;
 		$image_id              = absint( $attrs['attrs']['id'] ?? 0 );
-		$dim_ratio             = $attrs['attrs']['dimRatio'] ?? 56;
+		$dim_ratio             = $attrs['attrs']['dimRatio'] ?? 50;
 		$dim_ratio_closest_ten = ceil( $dim_ratio / 10 ) * 10;
+		$block_class           = [ $data['attrs']['className'] ];
 		$span_class            = $attrs['span_class'] ?? 'has-background-dim-' . $dim_ratio_closest_ten . ' wp-block-cover__gradient-background has-background-dim';
-		$image                 = Image::create(
-			$image_id,
-			[
-				'classname'   => $image_id ? sprintf( 'wp-block-cover__image-background wp-image-%s', $image_id ) : 'wp-block-cover__image-background',
-				'image_attrs' => [ 'data-object-fit' => $attrs['object_fit'] ?? 'cover' ],
-				'url'         => $data['attrs']['url'] ?? '',
-				'alt'         => $data['attrs']['alt'] ?? '',
-			]
-		);
+
+		$style = $attrs['attrs']['minHeight'] ? "min-height:{$attrs['attrs']['minHeight']}{$attrs['attrs']['minHeightUnit']}" : '';
+
+		if ( isset( $attrs['attrs']['align'] ) ) {
+			$block_class[] = "align{$attrs['attrs']['align']}";
+		}
+
+		if ( $image_id > 0 ) {
+			$image = Image::create(
+				$image_id,
+				[
+					'classname'   => sprintf( 'wp-block-cover__image-background wp-image-%s', $image_id ),
+					'image_attrs' => [ 'data-object-fit' => $attrs['object_fit'] ?? 'cover' ],
+					'url'         => $data['attrs']['url'] ?? '',
+					'alt'         => $data['attrs']['alt'] ?? '',
+				]
+			);
+		}
 
 		$block_template = <<<'TEMPLATE'
-		<div class="%1$s">
-			<span aria-hidden="true" class="%2$s"></span>
-			%3$s
-			<div class="wp-block-cover__inner-container">
+		<div class="%1$s" style="%2$s">
+			<span aria-hidden="true" class="%3$s"></span>
 			%4$s
+			<div class="wp-block-cover__inner-container">
+			%5$s
 		</div></div>
 		TEMPLATE;
 
 		$inner_content = sprintf(
 			$block_template,
-			\esc_attr( $data['attrs']['className'] ), // 1
-			$span_class, // 2
-			$image['image_html'], // 3
-			\filter_block_kses_value( $content, 'post' ) // 4
+			\esc_attr( join( ' ', $block_class ) ), // 1
+			\esc_attr( $style ), // 2
+			$span_class, // 3
+			$image['image_html'] ?? '', // 4
+			\filter_block_kses_value( $content, 'post' ) // 5
 		);
 
 		$data['innerContent']      = [ $inner_content ];
@@ -82,7 +94,7 @@ class CoreCover extends BlockBase {
 			unset( $data['attrs']['id'], $data['attrs']['className'] );
 		}
 
-		$data['attrs']['url'] = $image['attrs']['mediaLink'];
+		$data['attrs']['url'] = $image['attrs']['mediaLink'] ?? '';
 
 		return parent::return_block_html( $data, $render );
 
