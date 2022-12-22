@@ -107,7 +107,7 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @return array
 	 */
-	public static function get_data( array $input_data ) : array {
+	public static function get_data( array $input_data ): array {
 
 		$default = [
 			'blockName' => $input_data['block_name'] ?? static::$block_name,
@@ -136,7 +136,6 @@ abstract class BlockBase implements BlockInterface {
 		}
 
 		return self::merge_arrays_deep( $input_data, $default );
-
 	}
 
 	/**
@@ -147,7 +146,7 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @return string
 	 */
-	public static function get_element_classname( array $data ) : string {
+	public static function get_element_classname( array $data ): string {
 		return $data['elementClassName'] ?? $data['attrs']['className'];
 	}
 
@@ -161,7 +160,7 @@ abstract class BlockBase implements BlockInterface {
 	 *
 	 * @return array
 	 */
-	protected static function merge_arrays_deep( array $args, array $defaults ) : array {
+	protected static function merge_arrays_deep( array $args, array $defaults ): array {
 		$rtn = (array) $defaults;
 
 		foreach ( $args as $key => $value ) {
@@ -178,13 +177,12 @@ abstract class BlockBase implements BlockInterface {
 	/**
 	 * Hot-wires serialize_block_attributes as for some specific data this is causing double encoding issues
 	 *
-	 *
-	 * @param  string  $string The Input string
+	 * @param string $input The Input string.
 	 *
 	 * @return string
 	 */
-	public static function json_encode_clean_string( string $string ): string {
-		$rtn = trim( $string );
+	public static function json_encode_clean_string( string $input ): string {
+		$rtn = trim( $input );
 
 		if ( ! empty( $rtn ) ) {
 			$rtn = str_replace( '<br>', '', $rtn );
@@ -204,7 +202,6 @@ abstract class BlockBase implements BlockInterface {
 		}
 
 		return $rtn;
-
 	}
 
 
