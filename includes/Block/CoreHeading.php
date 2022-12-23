@@ -42,9 +42,9 @@ class CoreHeading extends BlockBase {
 	public static function create( string $content = '', array $attrs = [], bool $render = false ): string {
 
 		$data           = self::get_data( $attrs );
-		$level          = $attrs['level'] ?? 1;
-		$font_size      = $attrs['fontSize'] ?? '';
-		$text_align     = $attrs['textAlign'] ?? 'left';
+		$level          = $attrs['attrs']['level'] ?? 1;
+		$font_size      = $attrs['attrs']['fontSize'] ?? '';
+		$text_align     = $attrs['attrs']['textAlign'] ?? 'left';
 		$class_name_att = 'class="' . self::get_element_classname( $data ) . '"';
 
 		$block_template = <<<'TEMPLATE'
