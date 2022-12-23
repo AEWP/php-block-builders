@@ -44,7 +44,7 @@ class CoreHeading extends BlockBase {
 		$data           = self::get_data( $attrs );
 		$level          = $attrs['level'] ?? 1;
 		$font_size      = $attrs['fontSize'] ?? '';
-		$text_align     = $attrs['textAlign'] ?? 'text-left';
+		$text_align     = $attrs['textAlign'] ?? 'left';
 		$class_name_att = 'class="' . self::get_element_classname( $data ) . '"';
 
 		$block_template = <<<'TEMPLATE'
