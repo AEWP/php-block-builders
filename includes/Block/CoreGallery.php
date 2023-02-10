@@ -84,7 +84,7 @@ class CoreGallery extends BlockBase {
 						'url'        => $image['url'] ?? '',
 						'alt'        => $image['alt'] ?? '',
 						'figcaption' => $image['caption'] ?? '',
-						'classname'  => self::$item_block_classname,
+						'className'  => self::$item_block_classname,
 					],
 				]
 			);
